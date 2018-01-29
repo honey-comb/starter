@@ -1,0 +1,20 @@
+{
+    "general": {
+        "packageName": "HCStarter",
+        "sequence": 0,
+        "namespace": "HoneyComb\\Starter"
+    },
+    "formData": {
+    },
+    "adminMenu": [
+
+    ],
+    "seeder": "",
+    "routes": [
+        "Routes/routes.form-manager.php"
+    ],
+    "acl": {
+        "permissions": [
+        ]
+    }
+}
