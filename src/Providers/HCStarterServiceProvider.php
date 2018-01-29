@@ -27,39 +27,56 @@
 
 declare(strict_types = 1);
 
-namespace Tests;
+namespace HoneyComb\Starter\Providers;
 
-
-use HoneyComb\Starter\Providers\HCStarterServiceProvider;
-use Illuminate\Foundation\Application;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
 
 /**
- * Class TestCase
- * @package Tests
+ * Class HCStarterServiceProvider
+ * @package HoneyComb\Starter\Providers
  */
-abstract class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
+class HCStarterServiceProvider extends HCBaseServiceProvider
 {
+    /**
+     * @var string
+     */
+    protected $homeDirectory = __DIR__;
+
+    /**
+     * List of artisan console commands to register
+     *
+     * @var array
+     */
+    protected $commands = [];
+
+    /**
+     * Provider controller namespace
+     *
+     * @var string|null
+     */
+    protected $namespace = 'HoneyComb\Starter\Http\Controllers';
+
+    /**
+     * Provider name
+     *
+     * @var string
+     */
+    protected $packageName = 'HCStarter';
+
     /**
      *
      */
-    protected function setUp()
+    public function register(): void
     {
-        parent::setUp();
+        $this->registerRepositories();
     }
 
     /**
-     * @param Application $app
-     * @return array
+     *
      */
-    protected function getPackageProviders($app): array
+    private function registerRepositories(): void
     {
-        return [
-            HCStarterServiceProvider::class,
-        ];
+        $this->app->singleton(HCBaseRepository::class);
     }
 
-    protected function getEnvironmentSetUp($app)
-    {
-        parent::getEnvironmentSetUp($app);
-    }
 }

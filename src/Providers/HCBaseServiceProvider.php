@@ -29,7 +29,6 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Providers;
 
-use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Router;
@@ -71,7 +70,6 @@ class HCBaseServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @param Router $router
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function boot(Router $router)
     {
@@ -94,18 +92,9 @@ class HCBaseServiceProvider extends ServiceProvider
     }
 
     /**
-     *
-     */
-    public function register(): void
-    {
-        $this->registerRepositories();
-    }
-
-    /**
      * Load package routes
      *
      * @param Router $router
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function loadRoutes(Router $router): void
     {
@@ -115,6 +104,34 @@ class HCBaseServiceProvider extends ServiceProvider
                 require $this->packagePath($route);
             });
         }
+    }
+
+    /**
+     * Get routes
+     *
+     * @return array
+     */
+    private function getRoutes(): array
+    {
+        $fileSystem = new Filesystem();
+
+        $file = json_decode(
+            $fileSystem->get($this->packagePath('hc-config.json')),
+            true
+        );
+
+        return array_get($file, 'routes', []);
+    }
+
+    /**
+     * Get root package path
+     *
+     * @param string $path
+     * @return string
+     */
+    protected function packagePath(string $path): string
+    {
+        return $this->homeDirectory . '/../' . $path;
     }
 
     /**
@@ -150,42 +167,4 @@ class HCBaseServiceProvider extends ServiceProvider
             $this->packagePath('config') => config_path('/'),
         ], 'config');
     }
-
-    /**
-     * Get root package path
-     *
-     * @param string $path
-     * @return string
-     */
-    protected function packagePath(string $path): string
-    {
-        return $this->homeDirectory . '/../' . $path;
-    }
-
-    /**
-     * Get routes
-     *
-     * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    private function getRoutes(): array
-    {
-        $fileSystem = new Filesystem();
-
-        $file = json_decode(
-            $fileSystem->get($this->packagePath('hc-config.json')),
-            true
-        );
-
-        return array_get($file, 'routes', []);
-    }
-
-    /**
-     *
-     */
-    private function registerRepositories(): void
-    {
-        $this->app->singleton(HCBaseRepository::class);
-    }
-
 }
