@@ -145,7 +145,7 @@ abstract class Enumerable
     public static function options(): array
     {
         return array_values(array_map(function(Enumerable $enumerable) {
-            return ['id' => $enumerable->id(), 'name' => $enumerable->name()];
+            return ['id' => $enumerable->id(), 'label' => $enumerable->name()];
         }, self::enum()));
     }
 
