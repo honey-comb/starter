@@ -272,12 +272,28 @@ abstract class HCBaseRepository implements HCRepositoryContract
      */
     final protected function makeModel(): Model
     {
-        $model = app($this->model());
+        $model = $this->getModel();
+
+        $model = app($model);
 
         if (!$model instanceof Model) {
             throw new \RuntimeException(
-                'Class ' . $this->model() . ' must be instance of HoneyComb\\Core\\Models\\HCModel'
+                'Class ' . $this->getModel() . ' must be instance of HoneyComb\\Core\\Models\\HCModel'
             );
+        }
+
+        return $model;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    final protected function getModel (): string
+    {
+        $model = $this->model();
+
+        if (isset(config('hc.model_list')[$model])){
+            $model = config('hc.model_list')[$model];
         }
 
         return $model;
