@@ -27,13 +27,13 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\DTO;
+namespace HoneyComb\Starter\Http\Resources;
 
 /**
- * Class HCBaseDTO
- * @package HoneyComb\Starter\DTO
+ * Class HCBaseResource
+ * @package HoneyComb\Starter\Http\Resources
  */
-abstract class HCBaseDTO implements \JsonSerializable
+abstract class HCBaseResource implements \JsonSerializable
 {
     /**
      * @return array|mixed
