@@ -147,15 +147,15 @@ class EnumerableTest extends TestCase
         $this->assertEquals([
             [
                 'id' => 'desc_id',
-                'name' => 'desc_name',
+                'label' => 'desc_name',
             ],
             [
                 'id' => 'test_id_1',
-                'name' => 'test_name_1',
+                'label' => 'test_name_1',
             ],
             [
                 'id' => 'test_id_2',
-                'name' => 'test_name_2',
+                'label' => 'test_name_2',
             ],
         ], TestEnum::testOne()->options());
     }

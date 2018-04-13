@@ -19,16 +19,16 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
+    "php": "^7.1",
     "laravel/framework": "5.6.*",
     "guzzlehttp/guzzle": "^6.3",
     "ramsey/uuid": "^3.7"
   },
   "require-dev": {
-    "brianium/paratest": "^1.0",
     "mockery/mockery": "^1.0",
     "orchestra/testbench-browser-kit": "^3.6",
-    "phpunit/phpunit": "~7.0"
+    "phpunit/phpunit": "~7.0",
+    "codedungeon/phpunit-result-printer": "^0.14"
   },
   "autoload": {
     "psr-4": {
@@ -56,9 +56,6 @@
     ]
   },
   "config": {
-    "secure-http": false,
-    "platform": {
-      "php": "7.1"
-    }
+    "secure-http": false
   }
 }
