@@ -9,6 +9,8 @@ HoneyComb CMS starter functions
 
 This is part core package HoneyComb CMS package.
 
+If you want to use laravel version 5.6.* [use starter package version 0.2.*](https://github.com/honey-comb/starter/tree/master "Starter package version 0.2.*")
+
 ## Requirement
 
  - php: `^7.1`
