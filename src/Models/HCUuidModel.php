@@ -38,13 +38,6 @@ use Ramsey\Uuid\Uuid;
 class HCUuidModel extends HCModel
 {
     /**
-     * Soft delete database field.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
-
-    /**
      * The "booting" method of the model.
      *
      * @return void

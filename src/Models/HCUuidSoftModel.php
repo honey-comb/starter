@@ -38,4 +38,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class HCUuidSoftModel extends HCUuidModel
 {
     use SoftDeletes;
+
+    /**
+     * Soft delete database field.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 }
