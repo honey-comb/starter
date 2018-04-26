@@ -42,7 +42,7 @@ use HoneyComb\Starter\Contracts\HCRepositoryContract;
 abstract class HCBaseRepository implements HCRepositoryContract
 {
     /**
-     * 
+     *
      */
     const DEFAULT_PER_PAGE = 50;
 
@@ -265,6 +265,23 @@ abstract class HCBaseRepository implements HCRepositoryContract
     public function count(): int
     {
         return $this->makeQuery()->count();
+    }
+
+    /**
+     * @param object $record
+     * @param array $keys
+     * @param string $glue
+     * @return string
+     */
+    public function constructOptionLabel(object $record, array $keys, $glue = ', ')
+    {
+        $labels = [];
+
+        foreach ($keys as $key) {
+            $labels[] = $record->{$key};
+        }
+
+        return implode($glue, $labels);
     }
 
     /**
