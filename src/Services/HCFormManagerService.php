@@ -27,44 +27,66 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Http\Controllers;
-
-use Cache;
-use HoneyComb\Starter\Services\HCFormManagerService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
+namespace HoneyComb\Starter\Services;
 
 /**
- * Class HCFormManagerController
- * @package HoneyComb\Starter\http\controllers
+ * Class HCFormManagerService
+ * @package HoneyComb\Starter\Services
  */
-class HCFormManagerController extends Controller
+class HCFormManagerService
 {
     /**
-     * @var HCFormManagerService
+     * Get form structure as a json string
+     *
+     * @param string $key
+     * @return string
+     * @throws \Exception
      */
-    private $formManagerService;
-
-    /**
-     * HCFormManagerController constructor.
-     * @param HCFormManagerService $formManagerService
-     */
-    public function __construct(HCFormManagerService $formManagerService)
+    public function getFormAsString(string $key): string
     {
-        $this->formManagerService = $formManagerService;
+        return json_encode(
+            $this->getForm($key)
+        );
     }
 
     /**
-     * Get form structure as json object
+     * Get form from cache or get it from class and than store it to cache
      *
      * @param string $key
-     * @return JsonResponse
+     * @return array
      * @throws \Exception
      */
-    public function getStructure(string $key): JsonResponse
+    public function getForm(string $key): array
     {
-        return response()->json(
-            $this->formManagerService->getForm($key)
-        );
+        $this->regenerateForms();
+
+        $formHolder = cache()->get('hc-forms');
+
+        $new = substr($key, 0, -4);
+        $edit = substr($key, 0, -5);
+
+        if (array_has($formHolder, $new)) {
+            $form = app()->make($formHolder[$new]);
+
+            return $form->createForm();
+        }
+
+        if (array_has($formHolder, $edit)) {
+            $form = app()->make($formHolder[$edit]);
+
+            return $form->createForm(true);
+        }
+
+        throw new \Exception('Form not found: ' . $key);
+    }
+
+    /**
+     * If forms is not cached than cache them
+     */
+    private function regenerateForms(): void
+    {
+        if (!cache()->has('hc-forms')) {
+            \Artisan::call('hc:forms');
+        }
     }
 }
