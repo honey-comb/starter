@@ -276,6 +276,23 @@ abstract class HCBaseRepository implements HCRepositoryContract
     }
 
     /**
+     * @param object $record
+     * @param array $keys
+     * @param string $glue
+     * @return string
+     */
+    public function constructOptionLabel(object $record, array $keys, $glue = ', ')
+    {
+        $labels = [];
+
+        foreach ($keys as $key) {
+            $labels[] = $record->{$key};
+        }
+
+        return implode($glue, $labels);
+    }
+
+    /**
      * @return Model
      */
     final protected function makeModel(): Model
