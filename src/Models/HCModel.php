@@ -57,10 +57,21 @@ class HCModel extends Model
     /**
      * Function which gets fillable fields array
      *
+     * @param bool $join
      * @return array
      */
-    public static function getFillableFields(): array
+    public static function getFillableFields(bool $join = false)
     {
-        return with(new static)->getFillable();
+        $list = with(new static)->getFillable();
+
+        if ($join)
+        {
+            //to use default sort_by command
+            array_push($list, 'created_at');
+            foreach ($list as &$value)
+                $value = self::getTableName() . '.' . $value;
+        }
+
+        return $list;
     }
 }
