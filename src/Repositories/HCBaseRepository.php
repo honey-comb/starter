@@ -42,7 +42,7 @@ use HoneyComb\Starter\Contracts\HCRepositoryContract;
 abstract class HCBaseRepository implements HCRepositoryContract
 {
     /**
-     * 
+     *
      */
     const DEFAULT_PER_PAGE = 50;
 
@@ -55,6 +55,14 @@ abstract class HCBaseRepository implements HCRepositoryContract
      * @return string
      */
     abstract public function model(): string;
+
+    /**
+     * @return null|string
+     */
+    protected function translationModel(): ? string
+    {
+        return null;
+    }
 
     /**
      * @param array $columns
@@ -79,7 +87,7 @@ abstract class HCBaseRepository implements HCRepositoryContract
      * Getting fillable items from model (if model extends Model)
      * @return array
      */
-    public function getFillable (): array
+    public function getFillable(): array
     {
         return $this->makeModel()->getFillableFields();
     }
@@ -288,11 +296,25 @@ abstract class HCBaseRepository implements HCRepositoryContract
     /**
      * @return \Illuminate\Database\Eloquent\Model
      */
-    final protected function getModel (): string
+    final protected function getModel(): string
     {
         $model = $this->model();
 
-        if (isset(config('hc.model_list')[$model])){
+        if (isset(config('hc.model_list')[$model])) {
+            $model = config('hc.model_list')[$model];
+        }
+
+        return $model;
+    }
+
+    /**
+     * @return null|string
+     */
+    protected function getTranslationModel(): ? string
+    {
+        $model = $this->translationModel();
+
+        if (isset(config('hc.model_list')[$model])) {
             $model = config('hc.model_list')[$model];
         }
 
