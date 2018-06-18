@@ -281,7 +281,7 @@ abstract class HCBaseRepository implements HCRepositoryContract
      * @param string $glue
      * @return string
      */
-    public function constructOptionLabel(object $record, array $keys, $glue = ', ')
+    public function constructOptionLabel($record, array $keys, $glue = ', ')
     {
         $labels = [];
 
