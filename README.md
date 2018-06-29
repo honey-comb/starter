@@ -1,4 +1,4 @@
-# honeycomb-starter  
+# honeycomb-starter [![Build Status](https://travis-ci.org/honey-comb/starter.svg?branch=master)](https://travis-ci.org/honey-comb/starter)
 https://github.com/honey-comb/starter
 
 ## Description
