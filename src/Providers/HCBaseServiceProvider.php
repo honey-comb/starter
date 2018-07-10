@@ -166,5 +166,9 @@ class HCBaseServiceProvider extends ServiceProvider
         $this->publishes([
             $this->packagePath('config') => config_path('/'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__ . '/../resources/lang' => base_path('resources/lang/vendor/' . $this->packageName),
+        ], 'language');
     }
 }
