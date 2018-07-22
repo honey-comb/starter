@@ -80,7 +80,7 @@ trait HCQueryBuilderTrait
         }
 
         $builder = $this->getModel()::select($availableFields)
-            ->where(function (Builder $query) use ($request, $availableFields) {
+            ->where(function(Builder $query) use ($request, $availableFields) {
                 // add request filtering
                 $this->filterByRequestParameters($query, $request, $availableFields);
             });
@@ -241,11 +241,13 @@ trait HCQueryBuilderTrait
     {
         $fields = $this->getModel()::getFillableFields();
 
-        return $query->where(function (Builder $query) use ($fields, $phrase) {
+        return $query->where(function(Builder $query) use ($fields, $phrase) {
             foreach ($fields as $key => $field) {
                 $method = $key == 0 ? 'where' : 'orWhere';
 
-                $query->{$method}($field, 'LIKE', '%' . $phrase . '%');
+                if (strpos($field, '_at') === false) {
+                    $query->{$method}($field, 'LIKE', '%' . $phrase . '%');
+                }
             }
 
             return $query;
@@ -269,16 +271,15 @@ trait HCQueryBuilderTrait
 
         return $query->join($t, "$r.id", "=", "$t.record_id")
             ->where($t . '.language_code', app()->getLocale())
-            ->where(function (Builder $query) use ($t, $rf, $tf, $phrase) {
+            ->where(function(Builder $query) use ($t, $rf, $tf, $phrase) {
 
                 $fields = array_merge($rf, $tf);
                 $count = 0;
 
                 foreach ($fields as $key => $field) {
 
-                    if (strpos($field, 'created_at') ||
+                    if (strpos($field, '_at') ||
                         strpos($field, 'id') ||
-                        strpos($field, 'record_id') ||
                         strpos($field, 'language_code')) {
 
                     } else {
