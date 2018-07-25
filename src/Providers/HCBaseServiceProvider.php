@@ -70,6 +70,7 @@ class HCBaseServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @param Router $router
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function boot(Router $router)
     {
@@ -84,8 +85,6 @@ class HCBaseServiceProvider extends ServiceProvider
 
         $this->loadMigrations();
 
-        $this->loadViews();
-
         $this->loadTranslations();
 
         $this->registerPublishes();
@@ -95,6 +94,7 @@ class HCBaseServiceProvider extends ServiceProvider
      * Load package routes
      *
      * @param Router $router
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function loadRoutes(Router $router): void
     {
@@ -110,6 +110,7 @@ class HCBaseServiceProvider extends ServiceProvider
      * Get routes
      *
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     private function getRoutes(): array
     {
