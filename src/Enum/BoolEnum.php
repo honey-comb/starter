@@ -36,8 +36,7 @@ namespace HoneyComb\Starter\Enum;
 class BoolEnum extends Enumerable
 {
     /**
-     * @return BoolEnum|Enumerable
-     * @throws \ReflectionException
+     * @return BoolEnum
      */
     final public static function no(): BoolEnum
     {
@@ -45,8 +44,7 @@ class BoolEnum extends Enumerable
     }
 
     /**
-     * @return BoolEnum|Enumerable
-     * @throws \ReflectionException
+     * @return BoolEnum
      */
     final public static function yes(): BoolEnum
     {

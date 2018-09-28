@@ -103,11 +103,11 @@ abstract class Enumerable
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return Enumerable
      * @throws EnumNotFoundException
      */
-    public static function from($id): Enumerable
+    public static function from(string $id): Enumerable
     {
         $enum = self::enum();
         if (!isset($enum[$id])) {
@@ -122,6 +122,7 @@ abstract class Enumerable
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
     public static function enum(): array
     {
@@ -143,9 +144,31 @@ abstract class Enumerable
      */
     public static function options(): array
     {
-        return array_values(array_map(function(Enumerable $enumerable) {
+        return array_values(array_map(function (Enumerable $enumerable) {
             return ['id' => $enumerable->id(), 'label' => $enumerable->name()];
         }, self::enum()));
+    }
+
+    /**
+     * @param array $keys
+     * @return array
+     */
+    public static function only(array $keys): array
+    {
+        return array_values(array_filter(self::options(), function (array $enumerable) use ($keys) {
+            return in_array($enumerable['id'], $keys);
+        }));
+    }
+
+    /**
+     * @param array $keys
+     * @return array
+     */
+    public static function except(array $keys): array
+    {
+        return array_values(array_filter(self::options(), function (array $enumerable) use ($keys) {
+            return !in_array($enumerable['id'], $keys);
+        }));
     }
 
 
@@ -154,7 +177,7 @@ abstract class Enumerable
      */
     public static function json(): string
     {
-        return json_encode(array_map(function(Enumerable $enumerable) {
+        return json_encode(array_map(function (Enumerable $enumerable) {
             return $enumerable->name();
         }, self::enum()));
     }
@@ -173,6 +196,7 @@ abstract class Enumerable
      * @param string $name
      * @param string $description
      * @return Enumerable
+     * @throws \ReflectionException
      */
     protected static function make($id, string $name, string $description = ''): Enumerable
     {
