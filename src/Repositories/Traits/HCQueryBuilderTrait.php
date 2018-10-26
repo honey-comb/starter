@@ -129,6 +129,8 @@ trait HCQueryBuilderTrait
                 } else {
                     if ($value === 'NOT_NULL') {
                         $query->whereNotNull($fieldName);
+                    } elseif ($value === 'NULL') {
+                        $query->whereNull($fieldName);
                     } else {
                         $query->where($fieldName, '=', $value);
                     }
