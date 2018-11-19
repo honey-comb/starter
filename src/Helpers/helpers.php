@@ -31,6 +31,7 @@ if (!function_exists('uuid4')) {
      *
      * @param bool $toString
      * @return \Ramsey\Uuid\UuidInterface|string
+     * @throws Exception
      */
     function uuid4(bool $toString = false)
     {
@@ -176,5 +177,20 @@ if (!function_exists('stringToDouble')) {
         }
 
         return str_replace(',', '.', $value);
+    }
+}
+
+if (!function_exists('isUuid')) {
+    /**
+     * Check if given string is uuid format
+     *
+     * @param string $string
+     * @return bool
+     */
+    function isUuid(string $string): bool
+    {
+        $UUIDv4 = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
+
+        return (bool)preg_match($UUIDv4, $string);
     }
 }
