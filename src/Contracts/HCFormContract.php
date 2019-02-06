@@ -42,14 +42,12 @@ interface HCFormContract
     public function createForm(bool $edit = false): array;
 
     /**
-     * @param string $prefix
      * @return array
      */
-    public function getStructureNew(string $prefix): array;
+    public function getStructureNew(): array;
 
     /**
-     * @param string $prefix
      * @return array
      */
-    public function getStructureEdit(string $prefix): array;
+    public function getStructureEdit(): array;
 }

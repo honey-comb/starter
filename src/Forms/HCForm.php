@@ -32,10 +32,10 @@ namespace HoneyComb\Starter\Forms;
 use HoneyComb\Starter\Contracts\HCFormContract;
 
 /**
- * Class HCBaseForm
+ * Class HCForm
  * @package HoneyComb\Starter\Forms
  */
-abstract class HCBaseForm implements HCFormContract
+abstract class HCForm implements HCFormContract
 {
     /**
      * @var bool
@@ -53,34 +53,30 @@ abstract class HCBaseForm implements HCFormContract
     /**
      * Get Edit structure
      *
-     * @param string $prefix
      * @return array
      */
-    abstract public function getStructureEdit(string $prefix): array;
+    abstract public function getStructureEdit(): array;
 
     /**
      * Get new structure
      *
-     * @param string $prefix
      * @return array
      */
-    abstract public function getStructureNew(string $prefix): array;
+    abstract public function getStructureNew(): array;
 
     /**
      * Getting structure
      *
      * @param bool $edit
-     * @param string $prefix
-     * @param array $only
      * @return array
      */
-    public function getStructure(bool $edit, string $prefix = '', array $only = []): array
+    public function getStructure(bool $edit): array
     {
-        //TODO if $prefix not null add . at the end
-        if ($edit)
-            return $this->getStructureEdit($prefix);
-        else
-            return $this->getStructureNew($prefix);
+        if ($edit) {
+            return $this->getStructureEdit();
+        } else {
+            return $this->getStructureNew();
+        }
     }
 
     /**
@@ -89,8 +85,20 @@ abstract class HCBaseForm implements HCFormContract
      * @param bool $edit
      * @return string
      */
-    protected function getSubmitLabel(bool $edit): string
+    public function getSubmitLabel(bool $edit): string
     {
         return $edit ? trans('HCStarter::core.buttons.update') : trans('HCStarter::core.buttons.create');
+    }
+
+    /**
+     * @param string $label
+     * @param bool $required
+     * @param bool $readonly
+     * @param bool $hidden
+     * @return HCFormField
+     */
+    public function makeField(string $label, bool $required = false, bool $readonly = false, bool $hidden = false): HCFormField
+    {
+        return new HCFormField($label, $required, $readonly, $hidden);
     }
 }
