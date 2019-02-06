@@ -37,6 +37,7 @@ class BoolEnum extends Enumerable
 {
     /**
      * @return BoolEnum
+     * @throws \ReflectionException
      */
     final public static function no(): BoolEnum
     {
@@ -45,6 +46,7 @@ class BoolEnum extends Enumerable
 
     /**
      * @return BoolEnum
+     * @throws \ReflectionException
      */
     final public static function yes(): BoolEnum
     {
