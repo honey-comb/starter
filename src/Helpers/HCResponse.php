@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,18 +32,18 @@ namespace HoneyComb\Starter\Helpers;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Class HCFrontendResponse
+ * Class HCResponse
  * @package HoneyComb\Starter\Helpers
  */
-class HCFrontendResponse
+class HCResponse
 {
     /**
      * @param string $message
      * @param null $data
-     * @param null $redirectUrl
+     * @param string $redirectUrl
      * @return JsonResponse
      */
-    public function success(string $message, $data = null, $redirectUrl = null): JsonResponse
+    public function success(string $message, $data = null, string $redirectUrl = null): JsonResponse
     {
         return response()->json([
             'success' => true,
@@ -55,16 +55,22 @@ class HCFrontendResponse
 
     /**
      * @param string $message
-     * @param null $data
+     * @param array $errors
+     * @param string|null $redirectUrl
      * @param int $status
      * @return JsonResponse
      */
-    public function error(string $message, $data = null, int $status = JsonResponse::HTTP_BAD_REQUEST): JsonResponse
-    {
+    public function error(
+        string $message,
+        array $errors = [],
+        string $redirectUrl = null,
+        int $status = JsonResponse::HTTP_BAD_REQUEST
+    ): JsonResponse {
         return response()->json([
             'success' => false,
             'message' => $message,
-            'data' => $data,
+            'errors' => $errors,
+            'redirectUrl' => $redirectUrl,
         ], $status);
     }
 }

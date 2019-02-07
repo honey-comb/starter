@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,12 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Providers;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * Class HCBaseServiceProvider
@@ -94,34 +96,12 @@ class HCBaseServiceProvider extends ServiceProvider
      * Load package routes
      *
      * @param Router $router
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function loadRoutes(Router $router): void
     {
-        /** @var string $route */
         foreach ($this->getRoutes() as $route) {
-            $router->group(['namespace' => $this->namespace], function () use ($route) {
-                require $this->packagePath($route);
-            });
+            $router->namespace($this->namespace)->group($route);
         }
-    }
-
-    /**
-     * Get routes
-     *
-     * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    private function getRoutes(): array
-    {
-        $fileSystem = new Filesystem();
-
-        $file = json_decode(
-            $fileSystem->get($this->packagePath('hc-config.json')),
-            true
-        );
-
-        return array_get($file, 'routes', []);
     }
 
     /**
@@ -171,5 +151,19 @@ class HCBaseServiceProvider extends ServiceProvider
         $this->publishes([
             $this->homeDirectory . '/../resources/lang' => base_path('resources/lang/vendor/' . $this->packageName),
         ], 'language');
+    }
+
+    /**
+     * Get routes
+     *
+     * @return array
+     */
+    private function getRoutes(): array
+    {
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(realpath($this->packagePath('Routes'))));
+
+        return array_keys(array_filter(iterator_to_array($iterator), function (SplFileInfo $file) {
+            return $file->isFile() && substr($file->getFilename(), 0, strlen('routes.')) === (string)'routes.';
+        }));
     }
 }
