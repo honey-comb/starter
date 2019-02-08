@@ -25,13 +25,10 @@
  * https://innovationbase.eu
  */
 
-Route::prefix(config('hc.admin_url'))
-    ->group(function () {
-        Route::get('api/form-manager/{id}', 'HCFormManagerController@getStructure')
-            ->name('admin.api.form-manager')
-            ->middleware(['web', 'auth']);
-    });
 
-Route::get('api/form-manager/{id}', 'HCFormManagerController@getStructure')
-    ->name('frontend.api.form-manager')
-    ->middleware('web');
+Route::domain(config('hc.admin_domain'))
+    ->prefix('v1/api/form-manager')
+    ->group(function () {
+        Route::get('{id}', 'HCFormManagerController@getStructure')
+            ->name('v1.api.form-manager');
+    });
