@@ -41,7 +41,7 @@ class BoolEnum extends Enumerable
      */
     final public static function no(): BoolEnum
     {
-        return self::make(0, trans('HCStarter::enum.bool.no'));
+        return self::make(0, trans('HCStarter::starter.enum.boolean_no'));
     }
 
     /**
@@ -50,6 +50,6 @@ class BoolEnum extends Enumerable
      */
     final public static function yes(): BoolEnum
     {
-        return self::make(1, trans('HCStarter::enum.bool.yes'));
+        return self::make(1, trans('HCStarter::starter.enum.boolean_yes'));
     }
 }

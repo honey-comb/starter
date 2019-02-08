@@ -21,15 +21,17 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 return [
-    'bool' => [
-        'no' => 'Ne',
-        'yes' => 'Taip',
+    'error' => [
+        'form_not_found' => 'Tokios formos nėra: :key',
+    ],
+
+    'enum' => [
+        'boolean_no' => 'Ne',
+        'boolean_yes' => 'Taip',
     ],
 ];

@@ -45,7 +45,8 @@ class HCFormManagerService
     public function getFormAsString(string $key): string
     {
         return json_encode(
-            $this->getForm($key)
+            $this->getForm($key),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
     }
 
@@ -77,7 +78,7 @@ class HCFormManagerService
             return $form->createForm(true);
         }
 
-        throw new \Exception('Form not found: ' . $key);
+        throw new \Exception(trans('HCStarter::starter.error.form_not_found', ['key' => $key]));
     }
 
     /**

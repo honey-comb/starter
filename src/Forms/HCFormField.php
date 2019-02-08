@@ -313,8 +313,6 @@ class HCFormField
     private function setFieldType(string $type): void
     {
         $this->data['type'] = $type;
-
-        return $this;
     }
 
     /**

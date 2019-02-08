@@ -21,15 +21,17 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 return [
-    'bool' => [
-        'no' => 'No',
-        'yes' => 'Yes',
+    'error' => [
+        'form_not_found' => 'Form not found: :key',
+    ],
+
+    'enum' => [
+        'boolean_no' => 'No',
+        'boolean_yes' => 'Yes',
     ],
 ];
