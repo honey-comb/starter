@@ -100,7 +100,8 @@ class HCBaseServiceProvider extends ServiceProvider
     protected function loadRoutes(Router $router): void
     {
         foreach ($this->getRoutes() as $route) {
-            $router->namespace($this->namespace)->group($route);
+            $router->namespace($this->namespace)
+                ->group($route);
         }
     }
 
