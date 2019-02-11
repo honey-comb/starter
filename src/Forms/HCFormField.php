@@ -24,13 +24,7 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-
-/**
- * Created by PhpStorm.
- * User: Zygis
- * Date: 2019-02-04
- * Time: 17:03
- */
+declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 

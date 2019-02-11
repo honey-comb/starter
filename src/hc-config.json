@@ -10,9 +10,6 @@
 
     ],
     "seeder": "",
-    "routes": [
-        "Routes/routes.form-manager.php"
-    ],
     "acl": {
         "permissions": [
         ]
