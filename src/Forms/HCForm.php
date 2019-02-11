@@ -29,8 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 
-use HoneyComb\Starter\Services\HCLanguageService;
 use HoneyComb\Starter\Contracts\HCFormContract;
+use HoneyComb\Starter\Services\HCLanguageService;
 use Illuminate\Http\Request;
 
 /**
@@ -110,18 +110,11 @@ abstract class HCForm implements HCFormContract
 
     /**
      * @param string $label
-     * @param bool $required
-     * @param bool $readonly
-     * @param bool $hidden
      * @return HCFormField
      */
-    public function makeField(
-        string $label,
-        bool $required = false,
-        bool $readonly = false,
-        bool $hidden = false
-    ): HCFormField {
-        return new HCFormField($label, $required, $readonly, $hidden);
+    public function makeField(string $label): HCFormField
+    {
+        return new HCFormField($label);
     }
 
     /**

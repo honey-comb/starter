@@ -62,21 +62,10 @@ class HCFormField
     /**
      * HCFormField constructor.
      * @param string $label
-     * @param bool $required
-     * @param bool $readonly
-     * @param bool $hidden
      */
-    public function __construct(
-        string $label,
-        bool $required = false,
-        bool $readonly = false,
-        bool $hidden = false
-    ) {
+    public function __construct(string $label)
+    {
         $this->data['label'] = $label;
-
-        $this->isHidden($hidden);
-        $this->isReadOnly($readonly);
-        $this->isRequired($required);
 
         $this->setFieldType(self::SINGLE_LINE);
 

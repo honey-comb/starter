@@ -30,7 +30,6 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Http\Middleware;
 
 use Closure;
-use HoneyComb\Starter\Repositories\HCLanguageRepository;
 use HoneyComb\Starter\Services\HCLanguageService;
 use Illuminate\Http\Request;
 
@@ -41,10 +40,6 @@ use Illuminate\Http\Request;
 class HCCurrentLanguage
 {
     /**
-     * @var HCLanguageRepository
-     */
-    private $languageRepository;
-    /**
      * @var HCLanguageService
      */
     private $languageService;
@@ -52,11 +47,9 @@ class HCCurrentLanguage
     /**
      * HCCheckSelectedAdminLanguage constructor.
      * @param HCLanguageService $languageService
-     * @param HCLanguageRepository $languageRepository
      */
-    public function __construct(HCLanguageService $languageService, HCLanguageRepository $languageRepository)
+    public function __construct(HCLanguageService $languageService)
     {
-        $this->languageRepository = $languageRepository;
         $this->languageService = $languageService;
     }
 
