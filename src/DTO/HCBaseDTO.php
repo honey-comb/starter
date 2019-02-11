@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,9 +39,9 @@ use JsonSerializable;
 abstract class HCBaseDTO implements JsonSerializable, Arrayable
 {
     /**
-     * @return array|mixed
+     * @return array
      */
-    final public function jsonSerialize()
+    final public function jsonSerialize(): array
     {
         return $this->jsonData();
     }

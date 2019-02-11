@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,29 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-return [
-    'bool' => [
-        'no' => 'No',
-        'yes' => 'Yes',
-    ],
-];
+namespace HoneyComb\Starter\Database\Seeds;
+
+use Illuminate\Database\Seeder;
+
+/**
+ * Class HCStarterSeeder
+ * @package HoneyComb\Starter\Database\Seeds
+ */
+class HCStarterSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        $this->call(HCLanguageSeed::class);
+    }
+}

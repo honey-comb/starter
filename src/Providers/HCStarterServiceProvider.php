@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Providers;
 
+use HoneyComb\Starter\Helpers\HCFormManager;
+use HoneyComb\Starter\Helpers\HCResponse;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
-use HoneyComb\Starter\Services\HCFormManagerService;
+use HoneyComb\Starter\Repositories\HCLanguageRepository;
+use HoneyComb\Starter\Services\HCLanguageService;
 
 /**
  * Class HCStarterServiceProvider
@@ -69,9 +72,16 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(
+            $this->packagePath('config/starter.php'),
+            'starter'
+        );
+
         $this->registerRepositories();
 
         $this->registerServices();
+
+        $this->registerHelpers();
     }
 
     /**
@@ -80,6 +90,7 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
     private function registerRepositories(): void
     {
         $this->app->singleton(HCBaseRepository::class);
+        $this->app->singleton(HCLanguageRepository::class);
     }
 
     /**
@@ -87,7 +98,16 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
      */
     private function registerServices(): void
     {
-        $this->app->singleton(HCFormManagerService::class);
+        $this->app->singleton(HCLanguageService::class);
+    }
+
+    /**
+     *
+     */
+    private function registerHelpers(): void
+    {
+        $this->app->singleton(HCResponse::class);
+        $this->app->singleton(HCFormManager::class);
     }
 
 }

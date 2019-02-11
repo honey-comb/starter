@@ -25,57 +25,47 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
-namespace HoneyComb\Starter\Helpers;
-
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class HCConfigParseHelper
- * @package HoneyComb\Starter\Helpers
+ * Class CreateHcLanguageTable
  */
-class HCConfigParseHelper
+class CreateHcLanguageTable extends Migration
 {
     /**
-     * Scan folders for honeycomb configuration files
+     * Run the migrations.
      *
-     * @return array
+     * @return void
      */
-    public function getConfigFilesSorted()
+    public function up(): void
     {
-        $fileSystem = new Filesystem();
+        Schema::create('hc_language', function (Blueprint $table) {
+            $table->increments('count');
+            $table->uuid('id')->unique();
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('deleted_at')->nullable();
 
-        $projectConfig = $fileSystem->glob(app_path('hc-config.json'));
-        $packageConfigs = $fileSystem->glob(__DIR__ . '/../../../../*/*/*/hc-config.json');
+            $table->string('language_family');
+            $table->string('language');
+            $table->string('native_name');
+            $table->string('iso_639_1', 2)->index();
+            $table->string('iso_639_2', 3);
 
-        $packageConfigs = $this->sortByPriority($packageConfigs);
-
-        $files = array_merge($packageConfigs, $projectConfig);
-
-        return $files;
+            $table->boolean('content')->default(0);
+            $table->boolean('interface')->default(0);
+        });
     }
 
     /**
-     * Sort hc-config.json files by sequence
+     * Reverse the migrations.
      *
-     * @param array $filePaths
-     * @return array
+     * @return void
      */
-    private function sortByPriority(array $filePaths): array
+    public function down(): void
     {
-        $toSort = [];
-
-        foreach ($filePaths as $filePath) {
-            $file = json_decode(file_get_contents($filePath), true);
-
-            $sequence = array_get($file, 'general.sequence', 0);
-
-            $toSort[$sequence][] = $filePath;
-        }
-
-        ksort($toSort);
-
-        return array_collapse($toSort);
+        Schema::dropIfExists('hc_language');
     }
 }

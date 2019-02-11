@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,17 +37,19 @@ class BoolEnum extends Enumerable
 {
     /**
      * @return BoolEnum
+     * @throws \ReflectionException
      */
     final public static function no(): BoolEnum
     {
-        return self::make(0, trans('HCStarter::enum.bool.no'));
+        return self::make(0, trans('HCStarter::starter.enum.boolean_no'));
     }
 
     /**
      * @return BoolEnum
+     * @throws \ReflectionException
      */
     final public static function yes(): BoolEnum
     {
-        return self::make(1, trans('HCStarter::enum.bool.yes'));
+        return self::make(1, trans('HCStarter::starter.enum.boolean_yes'));
     }
 }

@@ -9,10 +9,7 @@
     "adminMenu": [
 
     ],
-    "seeder": "",
-    "routes": [
-        "Routes/routes.form-manager.php"
-    ],
+    "seeder": "HoneyComb\\Starter\\Database\\Seeds\\HCStarterSeeder",
     "acl": {
         "permissions": [
         ]

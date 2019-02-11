@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu
+ * E-mail: hello@innovationbase.eu 
  * https://innovationbase.eu
  */
 
@@ -106,6 +106,7 @@ abstract class Enumerable
      * @param string $id
      * @return Enumerable
      * @throws EnumNotFoundException
+     * @throws \ReflectionException
      */
     public static function from(string $id): Enumerable
     {
@@ -141,6 +142,7 @@ abstract class Enumerable
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
     public static function options(): array
     {
@@ -152,6 +154,7 @@ abstract class Enumerable
     /**
      * @param array $keys
      * @return array
+     * @throws \ReflectionException
      */
     public static function only(array $keys): array
     {
@@ -163,6 +166,7 @@ abstract class Enumerable
     /**
      * @param array $keys
      * @return array
+     * @throws \ReflectionException
      */
     public static function except(array $keys): array
     {
@@ -174,6 +178,7 @@ abstract class Enumerable
 
     /**
      * @return string
+     * @throws \ReflectionException
      */
     public static function json(): string
     {
@@ -185,6 +190,7 @@ abstract class Enumerable
     /**
      * @param array $state
      * @return Enumerable
+     * @throws \ReflectionException
      */
     public static function __set_state(array $state): self
     {

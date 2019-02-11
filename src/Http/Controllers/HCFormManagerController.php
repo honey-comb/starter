@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Http\Controllers;
 
 use Cache;
-use HoneyComb\Starter\Services\HCFormManagerService;
+use HoneyComb\Starter\Helpers\HCFormManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -41,17 +41,17 @@ use Illuminate\Routing\Controller;
 class HCFormManagerController extends Controller
 {
     /**
-     * @var HCFormManagerService
+     * @var HCFormManager
      */
-    private $formManagerService;
+    private $formManager;
 
     /**
      * HCFormManagerController constructor.
-     * @param HCFormManagerService $formManagerService
+     * @param HCFormManager $formManager
      */
-    public function __construct(HCFormManagerService $formManagerService)
+    public function __construct(HCFormManager $formManager)
     {
-        $this->formManagerService = $formManagerService;
+        $this->formManager = $formManager;
     }
 
     /**
@@ -64,7 +64,7 @@ class HCFormManagerController extends Controller
     public function getStructure(string $key): JsonResponse
     {
         return response()->json(
-            $this->formManagerService->getForm($key)
+            $this->formManager->getForm($key)
         );
     }
 }

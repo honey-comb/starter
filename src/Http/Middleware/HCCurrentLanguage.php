@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,66 +27,52 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Services;
+namespace HoneyComb\Starter\Http\Middleware;
+
+use Closure;
+use HoneyComb\Starter\Services\HCLanguageService;
+use Illuminate\Http\Request;
 
 /**
- * Class HCFormManagerService
- * @package HoneyComb\Starter\Services
+ * Class HCCurrentLanguage
+ * @package HoneyComb\Starter\Http\Middleware
  */
-class HCFormManagerService
+class HCCurrentLanguage
 {
     /**
-     * Get form structure as a json string
-     *
-     * @param string $key
-     * @return string
-     * @throws \Exception
+     * @var HCLanguageService
      */
-    public function getFormAsString(string $key): string
+    private $languageService;
+
+    /**
+     * HCCheckSelectedAdminLanguage constructor.
+     * @param HCLanguageService $languageService
+     */
+    public function __construct(HCLanguageService $languageService)
     {
-        return json_encode(
-            $this->getForm($key)
-        );
+        $this->languageService = $languageService;
     }
 
     /**
-     * Get form from cache or get it from class and than store it to cache
-     *
-     * @param string $key
-     * @return array
+     * @param Request $request
+     * @param Closure $next
+     * @return mixed
      * @throws \Exception
      */
-    public function getForm(string $key): array
+    public function handle(Request $request, Closure $next)
     {
-        $this->regenerateForms();
+        if ($request->headers->has(config('starter.header_interface_language_key'))) {
+            $enabled = $this->languageService->getInterfaceActiveLanguages();
 
-        $formHolder = cache()->get('hc-forms');
+            $locale = $request->headers->get(config('starter.header_interface_language_key'));
 
-        $new = substr($key, 0, -4);
-        $edit = substr($key, 0, -5);
+            if (!$enabled->contains('iso_639_1', $locale)) {
+                $locale = config('app.locale');
+            }
 
-        if (array_has($formHolder, $new)) {
-            $form = app()->make($formHolder[$new]);
-
-            return $form->createForm();
+            app()->setLocale($locale);
         }
 
-        if (array_has($formHolder, $edit)) {
-            $form = app()->make($formHolder[$edit]);
-
-            return $form->createForm(true);
-        }
-
-        throw new \Exception('Form not found: ' . $key);
-    }
-
-    /**
-     * If forms is not cached than cache them
-     */
-    private function regenerateForms(): void
-    {
-        if (!cache()->has('hc-forms')) {
-            \Artisan::call('hc:forms');
-        }
+        return $next($request);
     }
 }

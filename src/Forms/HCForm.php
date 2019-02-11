@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,17 +30,35 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Forms;
 
 use HoneyComb\Starter\Contracts\HCFormContract;
+use HoneyComb\Starter\Services\HCLanguageService;
+use Illuminate\Http\Request;
 
 /**
- * Class HCBaseForm
+ * Class HCForm
  * @package HoneyComb\Starter\Forms
  */
-abstract class HCBaseForm implements HCFormContract
+abstract class HCForm implements HCFormContract
 {
     /**
-     * @var bool
+     * @var Request
      */
-    protected $multiLanguage = false;
+    protected $request;
+
+    /**
+     * @var HCLanguageService
+     */
+    protected $languageService;
+
+    /**
+     * HCForm constructor.
+     * @param Request $request
+     * @param HCLanguageService $languageService
+     */
+    public function __construct(Request $request, HCLanguageService $languageService)
+    {
+        $this->request = $request;
+        $this->languageService = $languageService;
+    }
 
     /**
      * Creating form
@@ -53,34 +71,30 @@ abstract class HCBaseForm implements HCFormContract
     /**
      * Get Edit structure
      *
-     * @param string $prefix
      * @return array
      */
-    abstract public function getStructureEdit(string $prefix): array;
+    abstract public function getStructureEdit(): array;
 
     /**
      * Get new structure
      *
-     * @param string $prefix
      * @return array
      */
-    abstract public function getStructureNew(string $prefix): array;
+    abstract public function getStructureNew(): array;
 
     /**
      * Getting structure
      *
      * @param bool $edit
-     * @param string $prefix
-     * @param array $only
      * @return array
      */
-    public function getStructure(bool $edit, string $prefix = '', array $only = []): array
+    public function getStructure(bool $edit): array
     {
-        //TODO if $prefix not null add . at the end
-        if ($edit)
-            return $this->getStructureEdit($prefix);
-        else
-            return $this->getStructureNew($prefix);
+        if ($edit) {
+            return $this->getStructureEdit();
+        } else {
+            return $this->getStructureNew();
+        }
     }
 
     /**
@@ -89,8 +103,34 @@ abstract class HCBaseForm implements HCFormContract
      * @param bool $edit
      * @return string
      */
-    protected function getSubmitLabel(bool $edit): string
+    public function getSubmitLabel(bool $edit): string
     {
         return $edit ? trans('HCStarter::core.buttons.update') : trans('HCStarter::core.buttons.create');
+    }
+
+    /**
+     * @param string $label
+     * @return HCFormField
+     */
+    public function makeField(string $label): HCFormField
+    {
+        return new HCFormField($label);
+    }
+
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
+    public function getContentLanguages(): array
+    {
+        return $this->languageService->getFilteredContentLanguages($this->getCurrentLanguage());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCurrentLanguage(): string
+    {
+        return $this->request->headers->get(config('starter.header_content_language_key')) ?: app()->getLocale();
     }
 }

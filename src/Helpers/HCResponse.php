@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,30 +21,56 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Http\Resources;
+namespace HoneyComb\Starter\Helpers;
+
+use Illuminate\Http\JsonResponse;
 
 /**
- * Class HCBaseResource
- * @package HoneyComb\Starter\Http\Resources
+ * Class HCResponse
+ * @package HoneyComb\Starter\Helpers
  */
-abstract class HCBaseResource implements \JsonSerializable
+class HCResponse
 {
     /**
-     * @return array|mixed
+     * @param string $message
+     * @param null $data
+     * @param string $redirectUrl
+     * @return JsonResponse
      */
-    final public function jsonSerialize()
+    public function success(string $message, $data = null, string $redirectUrl = null): JsonResponse
     {
-        return $this->jsonData();
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'data' => $data,
+            'redirectUrl' => $redirectUrl,
+        ], JsonResponse::HTTP_OK);
     }
 
     /**
-     * @return array
+     * @param string $message
+     * @param array $errors
+     * @param string|null $redirectUrl
+     * @param int $status
+     * @return JsonResponse
      */
-    abstract protected function jsonData(): array;
+    public function error(
+        string $message,
+        array $errors = [],
+        string $redirectUrl = null,
+        int $status = JsonResponse::HTTP_BAD_REQUEST
+    ): JsonResponse {
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+            'errors' => $errors,
+            'redirectUrl' => $redirectUrl,
+        ], $status);
+    }
 }

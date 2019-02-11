@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ namespace HoneyComb\Starter\Contracts;
 
 /**
  * Interface HCFormContract
- * @package HoneyComb\Starter\Http\Controllers\Interfaces
+ * @package HoneyComb\Starter\Contracts
  */
 interface HCFormContract
 {
@@ -42,14 +42,12 @@ interface HCFormContract
     public function createForm(bool $edit = false): array;
 
     /**
-     * @param string $prefix
      * @return array
      */
-    public function getStructureNew(string $prefix): array;
+    public function getStructureNew(): array;
 
     /**
-     * @param string $prefix
      * @return array
      */
-    public function getStructureEdit(string $prefix): array;
+    public function getStructureEdit(): array;
 }

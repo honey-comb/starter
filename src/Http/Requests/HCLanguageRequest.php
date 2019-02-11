@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,52 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-return [
-    'bool' => [
-        'no' => 'Ne',
-        'yes' => 'Taip',
-    ],
-];
+namespace HoneyComb\Starter\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Class HCLanguageRequest
+ * @package HoneyComb\Starter\Http\Requests
+ */
+class HCLanguageRequest extends FormRequest
+{
+    /**
+     * Get only available to update fields
+     *
+     * @return array
+     */
+    public function getStrictUpdateValues(): array
+    {
+        return $this->only(['is_content', 'is_interface']);
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'is_content' => 'boolean',
+            'is_interface' => 'boolean',
+        ];
+    }
+}

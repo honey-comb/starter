@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,21 +21,19 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
+declare(strict_types = 1);
+
 return [
-    'yes' => 'Yes',
-    'no' => 'No',
-    'admin' => 'Admin',
-    'translations' => 'Translations',
-    'general' => 'General',
-    'name' => 'Name',
-    'title' => 'Title',
-    'description' => 'Description',
-    'images' => 'Images',
-    'gallery' => 'Gallery',
-    'index' => 'Index',
-    'users' => 'Users',
+
+    /*
+    |---------------------------------------------------------------------------
+    | Header language keys
+    |---------------------------------------------------------------------------
+    */
+    'header_content_language_key' => env('HC_CONTENT_HEADER_LANGUAGE_KEY', 'content-lang'),
+    'header_interface_language_key' => env('HC_INTERFACE_HEADER_LANGUAGE_KEY', 'interface-lang'),
 ];

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,50 +21,17 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu
+ * E-mail: hello@innovationbase.eu 
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
+return [
+    'error' => [
+        'form_not_found' => 'Tokios formos nėra: :key',
+    ],
 
-namespace HoneyComb\Starter\Helpers;
-
-use Illuminate\Http\JsonResponse;
-
-/**
- * Class HCFrontendResponse
- * @package HoneyComb\Starter\Helpers
- */
-class HCFrontendResponse
-{
-    /**
-     * @param string $message
-     * @param null $data
-     * @param null $redirectUrl
-     * @return JsonResponse
-     */
-    public function success(string $message, $data = null, $redirectUrl = null): JsonResponse
-    {
-        return response()->json([
-            'success' => true,
-            'message' => $message,
-            'data' => $data,
-            'redirectUrl' => $redirectUrl,
-        ], JsonResponse::HTTP_OK);
-    }
-
-    /**
-     * @param string $message
-     * @param null $data
-     * @param int $status
-     * @return JsonResponse
-     */
-    public function error(string $message, $data = null, int $status = JsonResponse::HTTP_BAD_REQUEST): JsonResponse
-    {
-        return response()->json([
-            'success' => false,
-            'message' => $message,
-            'data' => $data,
-        ], $status);
-    }
-}
+    'enum' => [
+        'boolean_no' => 'Ne',
+        'boolean_yes' => 'Taip',
+    ],
+];

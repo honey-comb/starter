@@ -29,53 +29,65 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Helpers;
 
-use Illuminate\Filesystem\Filesystem;
-
 /**
- * Class HCConfigParseHelper
+ * Class HCFormManager
  * @package HoneyComb\Starter\Helpers
  */
-class HCConfigParseHelper
+class HCFormManager
 {
     /**
-     * Scan folders for honeycomb configuration files
+     * Get form structure as a json string
      *
-     * @return array
+     * @param string $key
+     * @return string
+     * @throws \Exception
      */
-    public function getConfigFilesSorted()
+    public function getFormAsString(string $key): string
     {
-        $fileSystem = new Filesystem();
-
-        $projectConfig = $fileSystem->glob(app_path('hc-config.json'));
-        $packageConfigs = $fileSystem->glob(__DIR__ . '/../../../../*/*/*/hc-config.json');
-
-        $packageConfigs = $this->sortByPriority($packageConfigs);
-
-        $files = array_merge($packageConfigs, $projectConfig);
-
-        return $files;
+        return json_encode(
+            $this->getForm($key),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
-     * Sort hc-config.json files by sequence
+     * Get form from cache or get it from class and than store it to cache
      *
-     * @param array $filePaths
+     * @param string $key
      * @return array
+     * @throws \Exception
      */
-    private function sortByPriority(array $filePaths): array
+    public function getForm(string $key): array
     {
-        $toSort = [];
+        $this->regenerateForms();
 
-        foreach ($filePaths as $filePath) {
-            $file = json_decode(file_get_contents($filePath), true);
+        $formHolder = cache()->get('hc-forms');
 
-            $sequence = array_get($file, 'general.sequence', 0);
+        $new = substr($key, 0, -4);
+        $edit = substr($key, 0, -5);
 
-            $toSort[$sequence][] = $filePath;
+        if (array_has($formHolder, $new)) {
+            $form = app()->make($formHolder[$new]);
+
+            return $form->createForm();
         }
 
-        ksort($toSort);
+        if (array_has($formHolder, $edit)) {
+            $form = app()->make($formHolder[$edit]);
 
-        return array_collapse($toSort);
+            return $form->createForm(true);
+        }
+
+        throw new \Exception(trans('HCStarter::starter.error.form_not_found', ['key' => $key]));
+    }
+
+    /**
+     * If forms is not cached than cache them
+     */
+    private function regenerateForms(): void
+    {
+        if (!cache()->has('hc-forms')) {
+            \Artisan::call('hc:forms');
+        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,12 @@
  */
 
 return [
-    'yes' => 'Taip',
-    'no' => 'Ne',
-    'admin' => 'Adminas',
-    'translations' => 'Vertimas',
-    'general' => 'Bendras',
-    'name' => 'Pavadinimas',
-    'title' => 'Antraštė',
-    'description' => 'Aprašymas',
-    'images' => 'Nuotraukos',
-    'gallery' => 'Galerija',
-    'index' => 'Indeksas',
-    'users' => 'vartotojai',
+    'error' => [
+        'form_not_found' => 'Form not found: :key',
+    ],
+
+    'enum' => [
+        'boolean_no' => 'No',
+        'boolean_yes' => 'Yes',
+    ],
 ];

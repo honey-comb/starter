@@ -27,55 +27,55 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Helpers;
-
-use Illuminate\Filesystem\Filesystem;
+namespace HoneyComb\Starter\Models;
 
 /**
- * Class HCConfigParseHelper
- * @package HoneyComb\Starter\Helpers
+ * Class HCLanguage
+ * @package HoneyComb\Starter\Models
+ * @property string $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property string $language_family
+ * @property string $language
+ * @property string $native_name
+ * @property string $iso_639_1
+ * @property string $iso_639_2
+ * @property boolean $is_content
+ * @property boolean $is_interface
  */
-class HCConfigParseHelper
+class HCLanguage extends HCUuidSoftModel
 {
     /**
-     * Scan folders for honeycomb configuration files
+     * The database table used by the model.
      *
-     * @return array
+     * @var string
      */
-    public function getConfigFilesSorted()
-    {
-        $fileSystem = new Filesystem();
-
-        $projectConfig = $fileSystem->glob(app_path('hc-config.json'));
-        $packageConfigs = $fileSystem->glob(__DIR__ . '/../../../../*/*/*/hc-config.json');
-
-        $packageConfigs = $this->sortByPriority($packageConfigs);
-
-        $files = array_merge($packageConfigs, $projectConfig);
-
-        return $files;
-    }
+    protected $table = 'hc_language';
 
     /**
-     * Sort hc-config.json files by sequence
+     * The attributes that are mass assignable.
      *
-     * @param array $filePaths
-     * @return array
+     * @var array
      */
-    private function sortByPriority(array $filePaths): array
-    {
-        $toSort = [];
+    protected $fillable = [
+        'id',
+        'language_family',
+        'language',
+        'native_name',
+        'iso_639_1',
+        'iso_639_2',
+        'is_content',
+        'is_interface',
+    ];
 
-        foreach ($filePaths as $filePath) {
-            $file = json_decode(file_get_contents($filePath), true);
-
-            $sequence = array_get($file, 'general.sequence', 0);
-
-            $toSort[$sequence][] = $filePath;
-        }
-
-        ksort($toSort);
-
-        return array_collapse($toSort);
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_content' => 'boolean',
+        'is_interface' => 'boolean',
+    ];
 }

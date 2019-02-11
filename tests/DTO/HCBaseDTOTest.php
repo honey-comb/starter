@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +125,7 @@ class TestUserDTO extends HCBaseDTO
     /**
      * @return string
      */
-    public function getDescription(): ? string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
