@@ -29,7 +29,9 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 
+use HoneyComb\Core\Services\HCLanguageService;
 use HoneyComb\Starter\Contracts\HCFormContract;
+use Illuminate\Http\Request;
 
 /**
  * Class HCForm
@@ -38,9 +40,25 @@ use HoneyComb\Starter\Contracts\HCFormContract;
 abstract class HCForm implements HCFormContract
 {
     /**
-     * @var bool
+     * @var Request
      */
-    protected $multiLanguage = false;
+    protected $request;
+
+    /**
+     * @var HCLanguageService
+     */
+    protected $languageService;
+
+    /**
+     * HCForm constructor.
+     * @param Request $request
+     * @param HCLanguageService $languageService
+     */
+    public function __construct(Request $request, HCLanguageService $languageService)
+    {
+        $this->request = $request;
+        $this->languageService = $languageService;
+    }
 
     /**
      * Creating form
@@ -97,8 +115,29 @@ abstract class HCForm implements HCFormContract
      * @param bool $hidden
      * @return HCFormField
      */
-    public function makeField(string $label, bool $required = false, bool $readonly = false, bool $hidden = false): HCFormField
-    {
+    public function makeField(
+        string $label,
+        bool $required = false,
+        bool $readonly = false,
+        bool $hidden = false
+    ): HCFormField {
         return new HCFormField($label, $required, $readonly, $hidden);
+    }
+
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
+    public function getContentLanguages(): array
+    {
+        return $this->languageService->getFilteredContentLanguages($this->getCurrentLanguage());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCurrentLanguage(): string
+    {
+        return $this->request->headers->get('hc-lang-content') ?: app()->getLocale();
     }
 }
