@@ -105,7 +105,7 @@ class HCLanguageService
             ->pluck('iso_639_1')
             ->toArray();
 
-        if(!$currentLanguage || !in_array($languages, $currentLanguage)){
+        if (!$currentLanguage || !in_array($languages, $currentLanguage)) {
             return $languages;
         }
 
@@ -113,6 +113,6 @@ class HCLanguageService
 
         array_unshift($filtered, $currentLanguage);
 
-       return $filtered;
+        return $filtered;
     }
 }

@@ -72,7 +72,6 @@ class HCBaseServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @param Router $router
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function boot(Router $router)
     {

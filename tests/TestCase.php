@@ -58,6 +58,9 @@ abstract class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
         ];
     }
 
+    /**
+     * @param Application $app
+     */
     protected function getEnvironmentSetUp($app)
     {
         parent::getEnvironmentSetUp($app);

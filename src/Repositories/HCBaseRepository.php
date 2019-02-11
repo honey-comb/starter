@@ -29,11 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Repositories;
 
+use HoneyComb\Starter\Contracts\HCRepositoryContract;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use HoneyComb\Starter\Contracts\HCRepositoryContract;
 
 /**
  * Class Repository
@@ -59,7 +59,7 @@ abstract class HCBaseRepository implements HCRepositoryContract
     /**
      * @return null|string
      */
-    protected function translationModel(): ? string
+    protected function translationModel(): ?string
     {
         return null;
     }
@@ -327,7 +327,7 @@ abstract class HCBaseRepository implements HCRepositoryContract
     /**
      * @return null|string
      */
-    protected function getTranslationModel(): ? string
+    protected function getTranslationModel(): ?string
     {
         $model = $this->translationModel();
 

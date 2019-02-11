@@ -44,6 +44,7 @@ class HCCurrentLanguage
      * @var HCLanguageRepository
      */
     private $languageRepository;
+
     /**
      * @var HCLanguageService
      */
