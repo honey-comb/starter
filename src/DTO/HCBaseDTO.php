@@ -39,9 +39,9 @@ use JsonSerializable;
 abstract class HCBaseDTO implements JsonSerializable, Arrayable
 {
     /**
-     * @return array|mixed
+     * @return array
      */
-    final public function jsonSerialize()
+    final public function jsonSerialize(): array
     {
         return $this->jsonData();
     }

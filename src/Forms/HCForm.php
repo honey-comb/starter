@@ -29,7 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 
-use HoneyComb\Core\Services\HCLanguageService;
+use HoneyComb\Starter\Services\HCLanguageService;
 use HoneyComb\Starter\Contracts\HCFormContract;
 use Illuminate\Http\Request;
 

@@ -31,7 +31,7 @@ namespace HoneyComb\Starter\Contracts;
 
 /**
  * Interface HCFormContract
- * @package HoneyComb\Starter\Http\Controllers\Interfaces
+ * @package HoneyComb\Starter\Contracts
  */
 interface HCFormContract
 {

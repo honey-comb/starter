@@ -21,30 +21,40 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Http\Resources;
+namespace HoneyComb\Starter\Models;
 
 /**
- * Class HCBaseResource
- * @package HoneyComb\Starter\Http\Resources
+ * Class HCLanguage
+ * @package HoneyComb\Starter\Models
  */
-abstract class HCBaseResource implements \JsonSerializable
+class HCLanguage extends HCUuidSoftModel
 {
     /**
-     * @return array|mixed
+     * The database table used by the model.
+     *
+     * @var string
      */
-    final public function jsonSerialize()
-    {
-        return $this->jsonData();
-    }
+    protected $table = 'hc_language';
 
     /**
-     * @return array
+     * The attributes that are mass assignable.
+     *
+     * @var array
      */
-    abstract protected function jsonData(): array;
+    protected $fillable = [
+        'id',
+        'language_family',
+        'language',
+        'native_name',
+        'iso_639_1',
+        'iso_639_2',
+        'content',
+        'interface',
+    ];
 }

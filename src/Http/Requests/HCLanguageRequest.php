@@ -27,67 +27,53 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Services;
+namespace HoneyComb\Starter\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class HCFormManagerService
- * @package HoneyComb\Starter\Services
+ * Class HCLanguageRequest
+ * @package HoneyComb\Starter\Http\Requests
  */
-class HCFormManagerService
+class HCLanguageRequest extends FormRequest
 {
     /**
-     * Get form structure as a json string
+     * List of available keys for strict update
      *
-     * @param string $key
-     * @return string
-     * @throws \Exception
+     * @var array
      */
-    public function getFormAsString(string $key): string
-    {
-        return json_encode(
-            $this->getForm($key),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-        );
-    }
+    protected $strictUpdateKeys = ['content', 'interface'];
 
     /**
-     * Get form from cache or get it from class and than store it to cache
+     * Get only available to update fields
      *
-     * @param string $key
      * @return array
-     * @throws \Exception
      */
-    public function getForm(string $key): array
+    public function getStrictUpdateValues(): array
     {
-        $this->regenerateForms();
-
-        $formHolder = cache()->get('hc-forms');
-
-        $new = substr($key, 0, -4);
-        $edit = substr($key, 0, -5);
-
-        if (array_has($formHolder, $new)) {
-            $form = app()->make($formHolder[$new]);
-
-            return $form->createForm();
-        }
-
-        if (array_has($formHolder, $edit)) {
-            $form = app()->make($formHolder[$edit]);
-
-            return $form->createForm(true);
-        }
-
-        throw new \Exception(trans('HCStarter::starter.error.form_not_found', ['key' => $key]));
+        return $this->only($this->strictUpdateKeys);
     }
 
     /**
-     * If forms is not cached than cache them
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    private function regenerateForms(): void
+    public function authorize(): bool
     {
-        if (!cache()->has('hc-forms')) {
-            \Artisan::call('hc:forms');
-        }
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'content' => 'boolean',
+            'interface' => 'boolean',
+        ];
     }
 }

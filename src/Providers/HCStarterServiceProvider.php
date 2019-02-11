@@ -29,8 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Providers;
 
+use HoneyComb\Starter\Helpers\HCFormManager;
+use HoneyComb\Starter\Helpers\HCResponse;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
-use HoneyComb\Starter\Services\HCFormManagerService;
+use HoneyComb\Starter\Repositories\HCLanguageRepository;
+use HoneyComb\Starter\Services\HCLanguageService;
 
 /**
  * Class HCStarterServiceProvider
@@ -72,6 +75,8 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
         $this->registerRepositories();
 
         $this->registerServices();
+
+        $this->registerHelpers();
     }
 
     /**
@@ -80,6 +85,7 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
     private function registerRepositories(): void
     {
         $this->app->singleton(HCBaseRepository::class);
+        $this->app->singleton(HCLanguageRepository::class);
     }
 
     /**
@@ -87,7 +93,16 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
      */
     private function registerServices(): void
     {
-        $this->app->singleton(HCFormManagerService::class);
+        $this->app->singleton(HCLanguageService::class);
+    }
+
+    /**
+     *
+     */
+    private function registerHelpers(): void
+    {
+        $this->app->singleton(HCResponse::class);
+        $this->app->singleton(HCFormManager::class);
     }
 
 }
