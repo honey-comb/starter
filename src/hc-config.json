@@ -9,7 +9,7 @@
     "adminMenu": [
 
     ],
-    "seeder": "",
+    "seeder": "HoneyComb\\Starter\\Database\\Seeds\\HCStarterSeeder",
     "acl": {
         "permissions": [
         ]
