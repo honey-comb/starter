@@ -138,6 +138,6 @@ abstract class HCForm implements HCFormContract
      */
     protected function getCurrentLanguage(): string
     {
-        return $this->request->headers->get('hc-lang-content') ?: app()->getLocale();
+        return $this->request->headers->get(config('starter.header_content_language_key')) ?: app()->getLocale();
     }
 }

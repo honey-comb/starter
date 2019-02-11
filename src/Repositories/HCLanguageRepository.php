@@ -27,9 +27,9 @@
 
 namespace HoneyComb\Starter\Repositories;
 
+use HoneyComb\Starter\Enum\BoolEnum;
 use HoneyComb\Starter\Http\Requests\HCLanguageRequest;
 use HoneyComb\Starter\Models\HCLanguage;
-use HoneyComb\Starter\Enum\BoolEnum;
 use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -63,19 +63,6 @@ class HCLanguageRepository extends HCBaseRepository
     }
 
     /**
-     * Get all available interface languages
-     *
-     * @return Collection
-     * @throws \Exception
-     */
-    public function getInterfaceActiveLanguages(): Collection
-    {
-        return cache()->remember($this->getInterfaceCacheKey(), 60 * 24 * 7, function () {
-            return $this->makeQuery()->where('interface', BoolEnum::yes()->id())->get();
-        });
-    }
-
-    /**
      * @param HCLanguageRequest $request
      * @return \Illuminate\Support\Collection|static
      */
@@ -96,7 +83,7 @@ class HCLanguageRepository extends HCBaseRepository
     public function getContentLanguages(): Collection
     {
         return $this->makeQuery()
-            ->where('content', BoolEnum::yes()->id())
+            ->where('is_content', BoolEnum::yes()->id())
             ->get();
     }
 
@@ -107,7 +94,7 @@ class HCLanguageRepository extends HCBaseRepository
     public function getInterfaceLanguages(): Collection
     {
         return $this->makeQuery()
-            ->where('interface', BoolEnum::yes()->id())
+            ->where('is_interface', BoolEnum::yes()->id())
             ->get();
     }
 }

@@ -72,6 +72,11 @@ class HCStarterServiceProvider extends HCBaseServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(
+            $this->packagePath('config/starter.php'),
+            'starter'
+        );
+
         $this->registerRepositories();
 
         $this->registerServices();

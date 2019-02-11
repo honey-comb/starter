@@ -47,6 +47,11 @@ class HCLanguageService
     protected $repository;
 
     /**
+     * @var string
+     */
+    protected $interfaceCacheKey = '_hc_interface_languages';
+
+    /**
      * HCUserService constructor.
      * @param HCLanguageRepository $repository
      */
@@ -70,9 +75,22 @@ class HCLanguageService
      */
     public function update(HCLanguageRequest $request, string $languageId)
     {
-        cache()->forget($this->getRepository()->getInterfaceCacheKey());
+        cache()->forget($this->interfaceCacheKey);
 
         $this->getRepository()->update($request->getStrictUpdateValues(), $languageId);
+    }
+
+    /**
+     * Get all available interface languages
+     *
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getInterfaceActiveLanguages(): Collection
+    {
+        return cache()->remember($this->interfaceCacheKey, 60 * 24 * 7, function () {
+            return $this->getRepository()->getInterfaceLanguages();
+        });
     }
 
     /**
