@@ -54,8 +54,8 @@ class CreateHcLanguageTable extends Migration
             $table->string('iso_639_1', 2)->index();
             $table->string('iso_639_2', 3);
 
-            $table->boolean('content')->default(0);
-            $table->boolean('interface')->default(0);
+            $table->boolean('is_content')->default(0);
+            $table->boolean('is_interface')->default(0);
         });
     }
 
