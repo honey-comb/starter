@@ -38,20 +38,13 @@ use Illuminate\Foundation\Http\FormRequest;
 class HCLanguageRequest extends FormRequest
 {
     /**
-     * List of available keys for strict update
-     *
-     * @var array
-     */
-    protected $strictUpdateKeys = ['content', 'interface'];
-
-    /**
      * Get only available to update fields
      *
      * @return array
      */
     public function getStrictUpdateValues(): array
     {
-        return $this->only($this->strictUpdateKeys);
+        return $this->only(['is_content', 'is_interface']);
     }
 
     /**
@@ -72,8 +65,8 @@ class HCLanguageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'boolean',
-            'interface' => 'boolean',
+            'is_content' => 'boolean',
+            'is_interface' => 'boolean',
         ];
     }
 }

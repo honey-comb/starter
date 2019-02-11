@@ -65,7 +65,6 @@ class HCLanguage extends HCUuidSoftModel
         'native_name',
         'iso_639_1',
         'iso_639_2',
-
         'is_content',
         'is_interface',
     ];
@@ -76,7 +75,7 @@ class HCLanguage extends HCUuidSoftModel
      * @var array
      */
     protected $casts = [
-        'is_content',
-        'is_interface',
+        'is_content' => 'boolean',
+        'is_interface' => 'boolean',
     ];
 }
