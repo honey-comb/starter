@@ -34,4 +34,9 @@ return [
         'boolean_no' => 'No',
         'boolean_yes' => 'Yes',
     ],
+
+    'button' => [
+        'update' => 'Update',
+        'create' => 'Create',
+    ],
 ];

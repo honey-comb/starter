@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
@@ -33,5 +33,10 @@ return [
     'enum' => [
         'boolean_no' => 'Ne',
         'boolean_yes' => 'Taip',
+    ],
+
+    'button' => [
+        'update' => 'Atnaujinti',
+        'create' => 'Sukurti',
     ],
 ];

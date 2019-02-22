@@ -24,42 +24,69 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-
 declare(strict_types = 1);
 
-namespace HoneyComb\Starter\Contracts;
+namespace HoneyComb\Starter\Forms;
 
 /**
- * Interface HCFormContract
- * @package HoneyComb\Starter\Contracts
+ * Class HCFormButton
+ * @package HoneyComb\Starter\Forms
  */
-interface HCFormContract
+class HCFormButton
 {
-    /**
-     * @param bool $edit
-     * @return array
-     */
-    public function createForm(bool $edit = false): array;
+    const SUBMIT = 'submit';
+    const RESET = 'reset';
+    const BUTTON = 'button';
 
     /**
-     * @param bool $edit
-     * @return array
+     * @var array
      */
-    public function getStructure(bool $edit): array;
+    private $data = [];
 
     /**
-     * @param bool $edit
-     * @return array
+     * HCFormField constructor.
+     * @param string $label
      */
-    public function getButtons(bool $edit): array;
+    public function __construct(string $label)
+    {
+        $this->data['label'] = $label;
+
+        $this->setType(self::BUTTON);
+    }
+
+    /**
+     * @return HCFormButton
+     */
+    public function submit(): HCFormButton
+    {
+        $this->setType(self::SUBMIT);
+
+        return $this;
+    }
+
+    /**
+     * @return HCFormButton
+     */
+    public function reset(): HCFormButton
+    {
+        $this->setType(self::RESET);
+
+        return $this;
+    }
 
     /**
      * @return array
      */
-    public function getStructureNew(): array;
+    public function toArray(): array
+    {
+        return $this->data;
+    }
 
     /**
-     * @return array
+     * @param string $type
      */
-    public function getStructureEdit(): array;
+    private function setType(string $type): void
+    {
+        $this->data['type'] = $type;
+    }
 }
