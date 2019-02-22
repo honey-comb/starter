@@ -50,6 +50,11 @@ abstract class HCForm implements HCFormContract
     protected $languageService;
 
     /**
+     * @var bool
+     */
+    protected $multiLanguage = false;
+
+    /**
      * HCForm constructor.
      * @param Request $request
      * @param HCLanguageService $languageService
@@ -69,20 +74,6 @@ abstract class HCForm implements HCFormContract
     abstract public function createForm(bool $edit = false): array;
 
     /**
-     * Get Edit structure
-     *
-     * @return array
-     */
-    abstract public function getStructureEdit(): array;
-
-    /**
-     * Get new structure
-     *
-     * @return array
-     */
-    abstract public function getStructureNew(): array;
-
-    /**
      * Getting structure
      *
      * @param bool $edit
@@ -98,14 +89,39 @@ abstract class HCForm implements HCFormContract
     }
 
     /**
-     * Getting submit button label
-     *
      * @param bool $edit
-     * @return string
+     * @return array
      */
-    public function getSubmitLabel(bool $edit): string
+    public function getButtons(bool $edit): array
     {
-        return $edit ? trans('HCStarter::core.buttons.update') : trans('HCStarter::core.buttons.create');
+        $label = $edit ? trans('HCStarter::starter.button.update') : trans('HCStarter::starter.button.create');
+
+        return [
+            $this->makeButton($label)
+                ->submit()
+                ->toArray(),
+        ];
+
+    }
+
+    /**
+     * Get Edit structure
+     *
+     * @return array
+     */
+    public function getStructureEdit(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get new structure
+     *
+     * @return array
+     */
+    public function getStructureNew(): array
+    {
+        return [];
     }
 
     /**
@@ -115,6 +131,15 @@ abstract class HCForm implements HCFormContract
     public function makeField(string $label): HCFormField
     {
         return new HCFormField($label);
+    }
+
+    /**
+     * @param string $label
+     * @return HCFormButton
+     */
+    public function makeButton(string $label): HCFormButton
+    {
+        return new HCFormButton($label);
     }
 
     /**
