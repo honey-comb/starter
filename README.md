@@ -14,7 +14,7 @@ If you want to use laravel version 5.6.* [use starter package version 0.2.*](htt
 ## Requirement
 
  - php: `^7.1`
- - laravel: `^5.7`
+ - laravel: `5.7`
  - composer
  
  ## Installation
