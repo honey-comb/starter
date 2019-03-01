@@ -30,9 +30,12 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Http\Controllers;
 
 use Cache;
+use HoneyComb\Starter\Exceptions\HCException;
 use HoneyComb\Starter\Helpers\HCFormManager;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Class HCFormManagerController
@@ -46,25 +49,37 @@ class HCFormManagerController extends Controller
     private $formManager;
 
     /**
+     * @var HCResponse
+     */
+    private $response;
+
+    /**
      * HCFormManagerController constructor.
      * @param HCFormManager $formManager
+     * @param HCResponse $response
      */
-    public function __construct(HCFormManager $formManager)
+    public function __construct(HCFormManager $formManager, HCResponse $response)
     {
         $this->formManager = $formManager;
+        $this->response = $response;
     }
 
     /**
      * Get form structure as json object
      *
      * @param string $key
+     * @param string $type
      * @return JsonResponse
      * @throws \Exception
      */
-    public function getStructure(string $key): JsonResponse
+    public function getStructure(string $key, $type = 'new'): JsonResponse
     {
-        return response()->json(
-            $this->formManager->getForm($key)
-        );
+        try {
+            $form = $this->formManager->getForm($key, $type);
+        } catch (HCException $exception) {
+            return $this->response->error($exception->getMessage());
+        }
+
+        return $this->response->success('OK', $form);
     }
 }

@@ -39,38 +39,31 @@ class HCResponse
 {
     /**
      * @param string $message
-     * @param null $data
-     * @param string $redirectUrl
+     * @param array $data
      * @return JsonResponse
      */
-    public function success(string $message, $data = null, string $redirectUrl = null): JsonResponse
+    public function success(string $message = 'OK', array $data = []): JsonResponse
     {
         return response()->json([
-            'success' => true,
             'message' => $message,
             'data' => $data,
-            'redirectUrl' => $redirectUrl,
         ], JsonResponse::HTTP_OK);
     }
 
     /**
      * @param string $message
      * @param array $errors
-     * @param string|null $redirectUrl
      * @param int $status
      * @return JsonResponse
      */
     public function error(
         string $message,
         array $errors = [],
-        string $redirectUrl = null,
         int $status = JsonResponse::HTTP_BAD_REQUEST
     ): JsonResponse {
         return response()->json([
-            'success' => false,
             'message' => $message,
             'errors' => $errors,
-            'redirectUrl' => $redirectUrl,
         ], $status);
     }
 }

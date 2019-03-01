@@ -29,6 +29,9 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Helpers;
 
+use HoneyComb\Starter\Exceptions\HCException;
+use HoneyComb\Starter\Forms\HCForm;
+
 /**
  * Class HCFormManager
  * @package HoneyComb\Starter\Helpers
@@ -36,49 +39,36 @@ namespace HoneyComb\Starter\Helpers;
 class HCFormManager
 {
     /**
-     * Get form structure as a json string
-     *
-     * @param string $key
-     * @return string
-     * @throws \Exception
-     */
-    public function getFormAsString(string $key): string
-    {
-        return json_encode(
-            $this->getForm($key),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-        );
-    }
-
-    /**
      * Get form from cache or get it from class and than store it to cache
      *
      * @param string $key
+     * @param string $type
      * @return array
      * @throws \Exception
      */
-    public function getForm(string $key): array
+    public function getForm(string $key, string $type): array
     {
         $this->regenerateForms();
 
         $formHolder = cache()->get('hc-forms');
 
-        $new = substr($key, 0, -4);
-        $edit = substr($key, 0, -5);
-
-        if (array_has($formHolder, $new)) {
-            $form = app()->make($formHolder[$new]);
-
-            return $form->createForm();
+        if (!array_has($formHolder, $key) || !class_exists($formHolder[$key])) {
+            throw new HCException(trans('HCStarter::starter.error.form_not_found', ['key' => $key]));
         }
 
-        if (array_has($formHolder, $edit)) {
-            $form = app()->make($formHolder[$edit]);
+        $form = app()->make($formHolder[$key]);
 
-            return $form->createForm(true);
+        if (!$form instanceof HCForm) {
+            throw new HCException(
+                'Class ' . $formHolder[$key] . ' must be instance of HoneyComb\\Starter\\Forms\\HCForm'
+            );
         }
 
-        throw new \Exception(trans('HCStarter::starter.error.form_not_found', ['key' => $key]));
+        if ($form->authCheck && auth()->guest()) {
+            throw new HCException(trans('HCStarter::starter.error.not_authorized'));
+        }
+
+        return $form->createForm($type == 'edit');
     }
 
     /**

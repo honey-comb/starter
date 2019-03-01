@@ -31,7 +31,6 @@ namespace HoneyComb\Starter\Forms;
 
 use HoneyComb\Starter\Contracts\HCFormContract;
 use HoneyComb\Starter\Services\HCLanguageService;
-use Illuminate\Http\Request;
 
 /**
  * Class HCForm
@@ -40,30 +39,14 @@ use Illuminate\Http\Request;
 abstract class HCForm implements HCFormContract
 {
     /**
-     * @var Request
+     * @var bool
      */
-    protected $request;
-
-    /**
-     * @var HCLanguageService
-     */
-    protected $languageService;
+    public $authCheck = true;
 
     /**
      * @var bool
      */
-    protected $multiLanguage = false;
-
-    /**
-     * HCForm constructor.
-     * @param Request $request
-     * @param HCLanguageService $languageService
-     */
-    public function __construct(Request $request, HCLanguageService $languageService)
-    {
-        $this->request = $request;
-        $this->languageService = $languageService;
-    }
+    public $multiLanguage = false;
 
     /**
      * Creating form
@@ -71,7 +54,26 @@ abstract class HCForm implements HCFormContract
      * @param bool $edit
      * @return array
      */
-    abstract public function createForm(bool $edit = false): array;
+    public function createForm(bool $edit = false): array
+    {
+        $data = [
+            'storageUrl' => $this->getStorageUrl($edit),
+            'buttons' => $this->getButtons($edit),
+            'structure' => $this->getStructure($edit),
+        ];
+
+        if ($this->multiLanguage) {
+            $data['languages'] = $this->getContentLanguages();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param bool $edit
+     * @return string
+     */
+    abstract public function getStorageUrl(bool $edit): string;
 
     /**
      * Getting structure
@@ -101,7 +103,6 @@ abstract class HCForm implements HCFormContract
                 ->submit()
                 ->toArray(),
         ];
-
     }
 
     /**
@@ -144,11 +145,10 @@ abstract class HCForm implements HCFormContract
 
     /**
      * @return array
-     * @throws \ReflectionException
      */
-    public function getContentLanguages(): array
+    protected function getContentLanguages(): array
     {
-        return $this->languageService->getFilteredContentLanguages($this->getCurrentLanguage());
+        return app()->make(HCLanguageService::class)->getFilteredContentLanguages($this->getCurrentLanguage());
     }
 
     /**
@@ -156,6 +156,6 @@ abstract class HCForm implements HCFormContract
      */
     protected function getCurrentLanguage(): string
     {
-        return $this->request->headers->get(config('starter.header_content_language_key')) ?: app()->getLocale();
+        return request()->headers->get(config('starter.header_content_language_key')) ?: app()->getLocale();
     }
 }

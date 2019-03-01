@@ -73,7 +73,7 @@ class HCLanguageService
      * @param string $languageId
      * @throws \Exception
      */
-    public function update(HCLanguageRequest $request, string $languageId)
+    public function update(HCLanguageRequest $request, string $languageId): void
     {
         cache()->forget($this->interfaceCacheKey);
 
@@ -105,7 +105,7 @@ class HCLanguageService
             ->pluck('iso_639_1')
             ->toArray();
 
-        if (!$currentLanguage || !in_array($languages, $currentLanguage)) {
+        if (!$currentLanguage || !in_array($currentLanguage, $languages)) {
             return $languages;
         }
 

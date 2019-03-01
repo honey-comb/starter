@@ -30,6 +30,6 @@ Route::domain(config('hc.admin_domain'))
     ->prefix('v1/api/form-manager')
     ->middleware('api')
     ->group(function () {
-        Route::get('{id}', 'HCFormManagerController@getStructure')
+        Route::get('{id}/{type?}', 'HCFormManagerController@getStructure')
             ->name('v1.api.form-manager');
     });

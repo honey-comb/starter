@@ -43,6 +43,12 @@ interface HCFormContract
 
     /**
      * @param bool $edit
+     * @return string
+     */
+    public function getStorageUrl(bool $edit): string;
+
+    /**
+     * @param bool $edit
      * @return array
      */
     public function getStructure(bool $edit): array;

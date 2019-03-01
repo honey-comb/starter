@@ -28,6 +28,8 @@
 return [
     'error' => [
         'form_not_found' => 'Form not found: :key',
+        'no_method_available' => 'No :method available :className',
+        'not_authorized' => 'Not authorized',
     ],
 
     'enum' => [
