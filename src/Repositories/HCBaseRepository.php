@@ -33,6 +33,7 @@ use HoneyComb\Starter\Contracts\HCRepositoryContract;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -136,7 +137,7 @@ abstract class HCBaseRepository implements HCRepositoryContract
      */
     public function update(array $data, $attributeValue, string $attributeField = self::DEFAULT_ATTRIBUTES_FIELD): int
     {
-        array_forget($data, [
+        Arr::forget($data, [
             '_method',
             '_token',
         ]);

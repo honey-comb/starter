@@ -31,6 +31,7 @@ namespace HoneyComb\Starter\Helpers;
 
 use HoneyComb\Starter\Exceptions\HCException;
 use HoneyComb\Starter\Forms\HCForm;
+use Illuminate\Support\Arr;
 
 /**
  * Class HCFormManager
@@ -52,7 +53,7 @@ class HCFormManager
 
         $formHolder = cache()->get('hc-forms');
 
-        if (!array_has($formHolder, $key) || !class_exists($formHolder[$key])) {
+        if (!Arr::has($formHolder, $key) || !class_exists($formHolder[$key])) {
             throw new HCException(trans('HCStarter::starter.error.form_not_found', ['key' => $key]));
         }
 

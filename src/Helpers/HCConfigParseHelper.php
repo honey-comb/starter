@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Helpers;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 
 /**
  * Class HCConfigParseHelper
@@ -69,13 +70,13 @@ class HCConfigParseHelper
         foreach ($filePaths as $filePath) {
             $file = json_decode(file_get_contents($filePath), true);
 
-            $sequence = array_get($file, 'general.sequence', 0);
+            $sequence = Arr::get($file, 'general.sequence', 0);
 
             $toSort[$sequence][] = $filePath;
         }
 
         ksort($toSort);
 
-        return array_collapse($toSort);
+        return Arr::collapse($toSort);
     }
 }
