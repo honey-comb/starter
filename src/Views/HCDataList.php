@@ -47,25 +47,25 @@ class HCDataList
 
     /**
      * HCDataList constructor.
+     * @param string $key
      * @param string $source
      */
-    public function __construct(string $source)
+    public function __construct(string $key, string $source)
     {
-        $this->data['source'] = $source;
-        $this->data['headers'] = [];
+        $this->data = [
+            'key' => $key,
+            'source' => $source,
+        ];
 
         $this->setMethod('get');
     }
 
     /**
-     * @param string $key
-     * @return HCDataList
+     * @return string
      */
-    public function addKey(string $key): HCDataList
+    public function getKey(): string
     {
-        $this->data['key'] = $key;
-
-        return $this;
+        return $this->data['key'];
     }
 
     /**

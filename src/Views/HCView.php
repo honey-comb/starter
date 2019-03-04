@@ -59,6 +59,14 @@ class HCView
     }
 
     /**
+     * @return string
+     */
+    public function getKey(): string
+    {
+        return $this->data['key'];
+    }
+
+    /**
      * @param string $key
      * @param mixed $value
      * @return $this
@@ -82,26 +90,25 @@ class HCView
     }
 
     /**
-     * @param HCView $view
+     * @param string $key
+     * @param string $formId
+     * @param string|null $type
      * @return HCView
      */
-    public function addView(HCView $view): HCView
+    public function addForm(string $key, string $formId, string $type = null): HCView
     {
-        $this->data['views'][] = $view->toArray();
+        $this->data['forms'][$key] = route('v1.api.form-manager', ['id' => $formId, 'type' => $type]);
 
         return $this;
     }
 
     /**
-     * @param string $key
-     * @param string $formId
-     * @param string|null $type
+     * @param HCView $view
      * @return HCView
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function addForm(string $key, string $formId, string $type = null): HCView
+    public function addView(HCView $view): HCView
     {
-        $this->data['forms'][$key] = route('v1.api.form-manager', ['id' => $formId, 'type' => $type]);
+        $this->data['views'][$view->getKey()] = $view->toArray();
 
         return $this;
     }
@@ -112,7 +119,7 @@ class HCView
      */
     public function addDataList(HCDataList $dataList): HCView
     {
-        $this->data['data_list'][] = $dataList->toArray();
+        $this->data['data_list'][$dataList->getKey()] = $dataList->toArray();
 
         return $this;
     }
