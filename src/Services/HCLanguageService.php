@@ -88,7 +88,7 @@ class HCLanguageService
      */
     public function getInterfaceActiveLanguages(): Collection
     {
-        return cache()->remember($this->interfaceCacheKey, 60 * 24 * 7, function () {
+        return cache()->remember($this->interfaceCacheKey, now()->addWeek(), function () {
             return $this->getRepository()->getInterfaceLanguages();
         });
     }
