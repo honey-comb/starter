@@ -39,7 +39,7 @@ class HCResponse
 {
     /**
      * @param string $message
-     * @param array $data
+     * @param mixed $data
      * @return JsonResponse
      */
     public function success(string $message = 'OK', $data = null): JsonResponse
