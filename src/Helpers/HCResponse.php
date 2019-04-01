@@ -42,7 +42,7 @@ class HCResponse
      * @param array $data
      * @return JsonResponse
      */
-    public function success(string $message = 'OK', array $data = []): JsonResponse
+    public function success(string $message = 'OK', $data = null): JsonResponse
     {
         return response()->json([
             'message' => $message,
