@@ -67,11 +67,12 @@ class HCFormManagerController extends Controller
      * Get form structure as json object
      *
      * @param string $key
-     * @param string $type
+     * @param string|null $type
      * @return JsonResponse
-     * @throws \Exception
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \ReflectionException
      */
-    public function getStructure(string $key, $type = 'new'): JsonResponse
+    public function getStructure(string $key, string $type = null): JsonResponse
     {
         try {
             $form = $this->formManager->getForm($key, $type);

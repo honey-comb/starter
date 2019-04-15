@@ -25,47 +25,61 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 namespace HoneyComb\Starter\Contracts;
 
+
 /**
- * Interface HCFormContract
+ * Interface HCDataTableContract
  * @package HoneyComb\Starter\Contracts
  */
-interface HCFormContract
+interface HCDataTableContract
 {
     /**
-     * @param string|null $type
-     * @return array
-     */
-    public function createForm(string $type = null): array;
-
-    /**
-     * @param string|null $type
      * @return string
      */
-    public function getStorageUrl(string $type = null): string;
+    public function getKey(): string;
 
     /**
-     * @param string|null $type
-     * @return array
+     * @param string $title
+     * @return HCDataTableContract
      */
-    public function getStructure(string $type = null): array;
+    public function setTitle(string $title): HCDataTableContract;
 
     /**
-     * @param string|null $type
+     * @param string|null $source
+     * @return HCDataTableContract
+     */
+    public function setSource(string $source = null): HCDataTableContract;
+
+    /**
+     * @param string $method
+     * @return HCDataTableContract
+     */
+    public function setMethod(string $method): HCDataTableContract;
+
+    /**
+     * @param array $data
+     * @return HCDataTableContract
+     */
+    public function setData(array $data): HCDataTableContract;
+
+    /**
+     * @param string $field
+     * @param string|null $label
+     * @param callable|null $callable
+     * @return HCDataTableContract
+     */
+    public function addHeader(string $field, string $label = null, callable $callable = null): HCDataTableContract;
+
+    /**
+     * @param string $key
+     * @param string|null $source
      * @return array
      */
-    public function getButtons(string $type = null): array;
+    public function getDefaultStructure(string $key, string $source = null): array;
 
     /**
      * @return array
      */
-    public function getStructureNew(): array;
-
-    /**
-     * @return array
-     */
-    public function getStructureEdit(): array;
+    public function toArray(): array;
 }

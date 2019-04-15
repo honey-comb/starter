@@ -35,6 +35,10 @@ return [
     'enum' => [
         'boolean_no' => 'No',
         'boolean_yes' => 'Yes',
+
+        'form_type_new' => 'New',
+        'form_type_edit' => 'Edit',
+        'form_type_both' => 'Both',
     ],
 
     'button' => [

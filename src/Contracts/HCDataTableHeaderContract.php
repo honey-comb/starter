@@ -25,47 +25,64 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 namespace HoneyComb\Starter\Contracts;
 
+
 /**
- * Interface HCFormContract
+ * Interface HCDataTableHeaderContract
  * @package HoneyComb\Starter\Contracts
  */
-interface HCFormContract
+interface HCDataTableHeaderContract
 {
     /**
-     * @param string|null $type
-     * @return array
+     * @param string|null $label
+     * @return HCDataTableHeaderContract
      */
-    public function createForm(string $type = null): array;
+    public function setLabel(string $label = null): HCDataTableHeaderContract;
 
     /**
-     * @param string|null $type
-     * @return string
+     * @param bool $status
+     * @return HCDataTableHeaderContract
      */
-    public function getStorageUrl(string $type = null): string;
+    public function isSortable(bool $status = true): HCDataTableHeaderContract;
 
     /**
-     * @param string|null $type
-     * @return array
+     * @param string $key
+     * @param mixed $value
+     * @return HCDataTableHeaderContract
      */
-    public function getStructure(string $type = null): array;
+    public function addProperty(string $key, $value): HCDataTableHeaderContract;
 
     /**
-     * @param string|null $type
+     * @return HCDataTableHeaderContract
+     */
+    public function text(): HCDataTableHeaderContract;
+
+    /**
+     * @return HCDataTableHeaderContract
+     */
+    public function html(): HCDataTableHeaderContract;
+
+    /**
+     * @return HCDataTableHeaderContract
+     */
+    public function checkbox(): HCDataTableHeaderContract;
+
+    /**
+     * @param bool $external
+     * @return HCDataTableHeaderContract
+     */
+    public function url(bool $external = true): HCDataTableHeaderContract;
+
+    /**
+     * @param string $field
+     * @param string|null $label
      * @return array
      */
-    public function getButtons(string $type = null): array;
+    public function getDefaultStructure(string $field, string $label = null): array;
 
     /**
      * @return array
      */
-    public function getStructureNew(): array;
-
-    /**
-     * @return array
-     */
-    public function getStructureEdit(): array;
+    public function toArray(): array;
 }
