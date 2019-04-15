@@ -73,7 +73,7 @@ interface HCViewContract
     /**
      * @param string $key
      * @param HCFormContract $form
-     * @param string $type
+     * @param string|null $type
      * @return HCViewContract
      */
     public function addForm(string $key, HCFormContract $form, string $type = null): HCViewContract;

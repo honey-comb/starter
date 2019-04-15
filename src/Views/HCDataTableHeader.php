@@ -94,9 +94,7 @@ class HCDataTableHeader implements HCDataTableHeaderContract
      */
     public function text(): HCDataTableHeaderContract
     {
-        $this->setHeaderType(self::TEXT);
-
-        return $this;
+        return $this->setHeaderType(self::TEXT);
     }
 
     /**
@@ -104,9 +102,7 @@ class HCDataTableHeader implements HCDataTableHeaderContract
      */
     public function html(): HCDataTableHeaderContract
     {
-        $this->setHeaderType(self::HTML);
-
-        return $this;
+        return $this->setHeaderType(self::HTML);
     }
 
     /**
@@ -114,9 +110,7 @@ class HCDataTableHeader implements HCDataTableHeaderContract
      */
     public function checkbox(): HCDataTableHeaderContract
     {
-        $this->setHeaderType(self::CHECKBOX);
-
-        return $this;
+        return $this->setHeaderType(self::CHECKBOX);
     }
 
     /**
@@ -125,13 +119,9 @@ class HCDataTableHeader implements HCDataTableHeaderContract
      */
     public function url(bool $external = true): HCDataTableHeaderContract
     {
-        $this->setHeaderType(self::URL);
-
-        $this->addProperty('external', $external);
-
-        return $this;
+        return $this->setHeaderType(self::URL)
+            ->addProperty('external', $external);
     }
-
 
     /**
      * @param string $field
@@ -159,9 +149,12 @@ class HCDataTableHeader implements HCDataTableHeaderContract
 
     /**
      * @param string $type
+     * @return HCDataTableHeaderContract
      */
-    protected function setHeaderType(string $type): void
+    protected function setHeaderType(string $type): HCDataTableHeaderContract
     {
         $this->data['type'] = $type;
+
+        return $this;
     }
 }
