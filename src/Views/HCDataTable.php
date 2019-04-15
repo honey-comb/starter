@@ -38,6 +38,9 @@ use HoneyComb\Starter\Contracts\HCDataTableHeaderContract;
  */
 class HCDataTable implements HCDataTableContract
 {
+    const GET = 'GET';
+    const POST = 'POST';
+
     /**
      * @var array
      */
@@ -51,8 +54,6 @@ class HCDataTable implements HCDataTableContract
     public function __construct(string $key, string $source = null)
     {
         $this->data = $this->getDefaultStructure($key, $source);
-
-        $this->setMethod('get');
     }
 
     /**
@@ -140,7 +141,7 @@ class HCDataTable implements HCDataTableContract
         return [
             'key' => $key,
             'source' => $source,
-            'method' => null,
+            'method' => self::GET,
             'title' => null,
             'headers' => [],
             'data' => [],
