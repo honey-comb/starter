@@ -29,16 +29,21 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Views;
 
+use HoneyComb\Starter\Contracts\HCDataTableContract;
+use HoneyComb\Starter\Contracts\HCFormContract;
+use HoneyComb\Starter\Contracts\HCViewContract;
+use HoneyComb\Starter\Enum\HCFormTypeEnum;
+
 /**
  * Class HCView
  * @package HoneyComb\Starter\Views
  */
-class HCView
+class HCView implements HCViewContract
 {
     /**
      * @var array
      */
-    private $data = [];
+    protected $data = [];
 
     /**
      * HCView constructor.
@@ -47,15 +52,7 @@ class HCView
      */
     public function __construct(string $key, string $label = null)
     {
-        $this->data = [
-            'key' => $key,
-            'label' => $label,
-            'views' => [],
-            'forms' => [],
-            'data_list' => [],
-            'actions' => [],
-            'config' => [],
-        ];
+        $this->data = $this->getDefaultStructure($key, $label);
     }
 
     /**
@@ -68,10 +65,32 @@ class HCView
 
     /**
      * @param string $key
-     * @param mixed $value
-     * @return $this
+     * @return HCViewContract
      */
-    public function addConfig(string $key, $value): HCView
+    public function setKey(string $key): HCViewContract
+    {
+        $this->data['key'] = $key;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $label
+     * @return HCViewContract
+     */
+    public function setLabel(string $label = null): HCViewContract
+    {
+        $this->data['label'] = $label;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return HCViewContract
+     */
+    public function addConfig(string $key, $value): HCViewContract
     {
         $this->data['config'][$key] = $value;
 
@@ -79,12 +98,23 @@ class HCView
     }
 
     /**
-     * @param array $actions
-     * @return HCView
+     * @param HCViewContract $view
+     * @return HCViewContract
      */
-    public function addActions(array $actions): HCView
+    public function addView(HCViewContract $view): HCViewContract
     {
-        $this->data['actions'] = $actions;
+        $this->data['views'][$view->getKey()] = $view->toArray();
+
+        return $this;
+    }
+
+    /**
+     * @param HCDataTableContract $dataTable
+     * @return HCViewContract
+     */
+    public function addDataTable(HCDataTableContract $dataTable): HCViewContract
+    {
+        $this->data['data_tables'][$dataTable->getKey()] = $dataTable->toArray();
 
         return $this;
     }
@@ -93,35 +123,82 @@ class HCView
      * @param string $key
      * @param string $formId
      * @param string|null $type
-     * @return HCView
+     * @return HCViewContract
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function addForm(string $key, string $formId, string $type = null): HCView
+    public function addFormSource(string $key, string $formId, string $type = null): HCViewContract
     {
-        $this->data['forms'][$key] = route('v1.api.form-manager', ['id' => $formId, 'type' => $type]);
+        $this->data['form_sources'][$key] = route('v1.api.form-manager', ['id' => $formId, 'type' => $type]);
 
         return $this;
     }
 
     /**
-     * @param HCView $view
-     * @return HCView
+     * @param string $key
+     * @param HCFormContract $form
+     * @param string|null $type
+     * @return HCViewContract
+     * @throws \ReflectionException
      */
-    public function addView(HCView $view): HCView
+    public function addForm(string $key, HCFormContract $form, string $type = null): HCViewContract
     {
-        $this->data['views'][$view->getKey()] = $view->toArray();
+        $formList = [];
+
+        $newType = HCFormTypeEnum::new()->id();
+        $editType = HCFormTypeEnum::edit()->id();
+        $both = is_null($type) || HCFormTypeEnum::both()->id();
+
+        if ($type === $newType || $both) {
+            $formList[$newType] = $form->getStructure(false);
+        }
+
+        if ($type === $editType || $both) {
+            $formList[$editType] = $form->getStructure(true);
+        }
+
+        $this->data['forms'][$key] = $formList;
+    }
+
+
+    /**
+     * @param string $permission
+     * @return HCViewContract
+     */
+    public function addPermission(string $permission): HCViewContract
+    {
+        $this->data['permissions'][] = $permission;
 
         return $this;
     }
 
     /**
-     * @param HCDataList $dataList
-     * @return HCView
+     * @param array $permissions
+     * @return HCViewContract
      */
-    public function addDataList(HCDataList $dataList): HCView
+    public function setPermissions(array $permissions): HCViewContract
     {
-        $this->data['data_list'][$dataList->getKey()] = $dataList->toArray();
+        $this->data['permissions'] = $permissions;
 
         return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param string|null $label
+     * @return array
+     */
+    public function getDefaultStructure(string $key, string $label = null): array
+    {
+        return [
+            'key' => $key,
+            'label' => $label,
+            'views' => [],
+            'forms' => [],
+            'form_sources' => [],
+            'data_tables' => [],
+            'permissions' => [],
+            'config' => [],
+        ];
     }
 
     /**

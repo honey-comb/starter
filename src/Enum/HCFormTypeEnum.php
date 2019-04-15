@@ -25,24 +25,40 @@
  * https://innovationbase.eu
  */
 
-return [
-    'error' => [
-        'form_not_found' => 'Tokios formos nėra: :key',
-        'no_method_available' => 'No :method available :className',
-        'not_authorized' => 'Not authorized',
-    ],
+declare(strict_types = 1);
 
-    'enum' => [
-        'boolean_no' => 'Ne',
-        'boolean_yes' => 'Taip',
+namespace HoneyComb\Starter\Enum;
 
-        'form_type_new' => 'New',
-        'form_type_edit' => 'Edit',
-        'form_type_both' => 'Both',
-    ],
+/**
+ * Class BoolEnum
+ * @package HoneyComb\Starter\Enum
+ */
+class HCFormTypeEnum extends Enumerable
+{
+    /**
+     * @return HCFormTypeEnum
+     * @throws \ReflectionException
+     */
+    final public static function new(): HCFormTypeEnum
+    {
+        return self::make('new', trans('HCStarter::starter.enum.form_type_new'));
+    }
 
-    'button' => [
-        'update' => 'Atnaujinti',
-        'create' => 'Sukurti',
-    ],
-];
+    /**
+     * @return HCFormTypeEnum
+     * @throws \ReflectionException
+     */
+    final public static function edit(): HCFormTypeEnum
+    {
+        return self::make('edit', trans('HCStarter::starter.enum.form_type_edit'));
+    }
+
+    /**
+     * @return HCFormTypeEnum
+     * @throws \ReflectionException
+     */
+    final public static function both(): HCFormTypeEnum
+    {
+        return self::make('both', trans('HCStarter::starter.enum.form_type_both'));
+    }
+}
