@@ -43,11 +43,12 @@ class HCFormManager
      * Get form from cache or get it from class and than store it to cache
      *
      * @param string $key
-     * @param string $type
+     * @param string|null $type
      * @return array
-     * @throws \Exception
+     * @throws HCException
+     * @throws \ReflectionException
      */
-    public function getForm(string $key, string $type): array
+    public function getForm(string $key, string $type = null): array
     {
         $this->regenerateForms();
 
@@ -69,7 +70,7 @@ class HCFormManager
             throw new HCException(trans('HCStarter::starter.error.not_authorized'));
         }
 
-        return $form->createForm($type == 'edit');
+        return $form->createForm($type);
     }
 
     /**

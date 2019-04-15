@@ -144,16 +144,17 @@ class HCView implements HCViewContract
     {
         $formList = [];
 
-        $newType = HCFormTypeEnum::new()->id();
-        $editType = HCFormTypeEnum::edit()->id();
-        $both = is_null($type) || HCFormTypeEnum::both()->id();
-
-        if ($type === $newType || $both) {
-            $formList[$newType] = $form->getStructure(false);
-        }
-
-        if ($type === $editType || $both) {
-            $formList[$editType] = $form->getStructure(true);
+        switch ($type) {
+            case HCFormTypeEnum::new()->id():
+                $formList[$type] = $form->getStructure(false);
+                break;
+            case HCFormTypeEnum::edit()->id():
+                $formList[$type] = $form->getStructure(true);
+                break;
+            default:
+                $formList[HCFormTypeEnum::new()->id()] = $form->getStructure(false);
+                $formList[HCFormTypeEnum::edit()->id()] = $form->getStructure(true);
+                break;
         }
 
         $this->data['forms'][$key] = $formList;

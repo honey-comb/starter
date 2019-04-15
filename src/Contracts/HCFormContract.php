@@ -36,28 +36,28 @@ namespace HoneyComb\Starter\Contracts;
 interface HCFormContract
 {
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return array
      */
-    public function createForm(bool $edit = false): array;
+    public function createForm(string $type = null): array;
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return string
      */
-    public function getStorageUrl(bool $edit): string;
+    public function getStorageUrl(string $type = null): string;
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return array
      */
-    public function getStructure(bool $edit): array;
+    public function getStructure(string $type = null): array;
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return array
      */
-    public function getButtons(bool $edit): array;
+    public function getButtons(string $type = null): array;
 
     /**
      * @return array

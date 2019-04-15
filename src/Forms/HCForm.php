@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Forms;
 
 use HoneyComb\Starter\Contracts\HCFormContract;
+use HoneyComb\Starter\Enum\HCFormTypeEnum;
 use HoneyComb\Starter\Services\HCLanguageService;
 
 /**
@@ -51,15 +52,16 @@ abstract class HCForm implements HCFormContract
     /**
      * Creating form
      *
-     * @param bool $edit
+     * @param string|null $type
      * @return array
+     * @throws \ReflectionException
      */
-    public function createForm(bool $edit = false): array
+    public function createForm(string $type = null): array
     {
         $data = [
-            'storageUrl' => $this->getStorageUrl($edit),
-            'buttons' => $this->getButtons($edit),
-            'structure' => $this->getStructure($edit),
+            'storageUrl' => $this->getStorageUrl($type),
+            'buttons' => $this->getButtons($type),
+            'structure' => $this->getStructure($type),
         ];
 
         if ($this->multiLanguage) {
@@ -70,33 +72,38 @@ abstract class HCForm implements HCFormContract
     }
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return string
      */
-    abstract public function getStorageUrl(bool $edit): string;
+    abstract public function getStorageUrl(string $type = null): string;
 
     /**
      * Getting structure
      *
-     * @param bool $edit
+     * @param string|null $type
      * @return array
+     * @throws \ReflectionException
      */
-    public function getStructure(bool $edit): array
+    public function getStructure(string $type = null): array
     {
-        if ($edit) {
+        if ($type === HCFormTypeEnum::edit()->id()) {
             return $this->getStructureEdit();
-        } else {
-            return $this->getStructureNew();
         }
+
+        return $this->getStructureNew();
     }
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return array
      */
-    public function getButtons(bool $edit): array
+    public function getButtons(string $type = null): array
     {
-        $label = $edit ? trans('HCStarter::starter.button.update') : trans('HCStarter::starter.button.create');
+        $label = trans('HCStarter::starter.button.create');
+
+        if ($type === HCFormTypeEnum::edit()->id()) {
+            $label = trans('HCStarter::starter.button.update');
+        }
 
         return [
             $this->makeButton($label)
