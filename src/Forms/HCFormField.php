@@ -269,7 +269,7 @@ class HCFormField
     {
         if ($this->hasOptions()) {
             $this->data['options'][] = [
-                'id' => $id,
+                'value' => $id,
                 'label' => $label,
             ];
         }
