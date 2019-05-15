@@ -24,9 +24,10 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace HoneyComb\Starter\Forms;
+use Illuminate\Support\Arr;
 
 /**
  * Class HCFormField
@@ -36,11 +37,11 @@ class HCFormField
 {
     const EMAIL = 'email';
     const NUMBER = 'number';
+    const SELECT = 'select';
     const PASSWORD = 'password';
-    const TEXTAREA = 'textArea';
+    const TEXT_AREA = 'textArea';
     const CHECKBOX = 'checkBox';
     const SINGLE_LINE = 'singleLine';
-    const DROPDOWN_LIST = 'dropDownList';
     const CHECKBOX_LIST = 'checkBoxList';
 
     /**
@@ -55,103 +56,81 @@ class HCFormField
 
     /**
      * HCFormField constructor.
-     * @param string $label
+     * @param string|null $label
      */
-    public function __construct(string $label)
+    public function __construct(string $label = null)
     {
-        $this->data['label'] = $label;
-
-        $this->setFieldType(self::SINGLE_LINE);
-
+        $this->data = $this->getDefaultStructure($label);
         // TODO add radio and switches field types
     }
 
     /**
-     * @param array $options
      * @return HCFormField
      */
-    public function setOptions(array $options): HCFormField
+    public function singleLine(): HCFormField
     {
-        $this->data['options'] = $options;
-
-        return $this;
+        return $this->setFieldType(self::SINGLE_LINE);
     }
 
     /**
-     * @param string $fieldId
-     * @param array $value
-     * @param bool $ignore
-     * @param string|null $sendAs
      * @return HCFormField
      */
-    public function setDependency(
-        string $fieldId,
-        array $value,
-        bool $ignore = false,
-        string $sendAs = null
-    ): HCFormField {
-        $this->dependencies[$fieldId] = [
-            'value' => $value,
-            'ignore' => $ignore,
-            'sendAs' => $sendAs,
-        ];
-
-        return $this;
+    public function password(): HCFormField
+    {
+        return $this->setFieldType(self::PASSWORD);
     }
 
     /**
-     * @param string $url
      * @return HCFormField
      */
-    public function setSearchUrl(string $url): HCFormField
+    public function textArea(): HCFormField
     {
-        $this->data['searchUrl'] = $url;
-
-        return $this;
+        return $this->setFieldType(self::TEXT_AREA);
     }
 
     /**
-     * @param string|null $newUrl
      * @return HCFormField
      */
-    public function setNew(string $newUrl = null): HCFormField
+    public function email(): HCFormField
     {
-        $this->data['new'] = $newUrl;
-
-        return $this;
+        return $this->setFieldType(self::EMAIL);
     }
 
     /**
-     * @param int $length
      * @return HCFormField
      */
-    public function setMinLength(int $length): HCFormField
+    public function number(): HCFormField
     {
-        $this->data['minLength'] = $length;
-
-        return $this;
+        return $this->setFieldType(self::NUMBER);
     }
 
     /**
-     * @param int $length
      * @return HCFormField
      */
-    public function setMaxLength(int $length): HCFormField
+    public function checkbox(): HCFormField
     {
-        $this->data['maxLength'] = $length;
-
-        return $this;
+        return $this->setFieldType(self::CHECKBOX)
+            ->setValue(false);
     }
 
     /**
-     * @param mixed $value
      * @return HCFormField
      */
-    public function setValue($value): HCFormField
+    public function checkboxList(): HCFormField
     {
-        $this->data['value'] = $value;
+        return $this->setFieldType(self::CHECKBOX_LIST);
+    }
 
-        return $this;
+    /**
+     * @param bool $multiple
+     * @param bool $filterable
+     * @return HCFormField
+     */
+    public function select(bool $multiple = false, bool $filterable = false): HCFormField
+    {
+        return $this->setFieldType(self::SELECT)
+            ->addProperty('multiple', $multiple)
+            ->addProperty('filterable', $filterable);
     }
 
     /**
@@ -199,83 +178,134 @@ class HCFormField
     }
 
     /**
+     * @param mixed $value
      * @return HCFormField
      */
-    public function singleLine(): HCFormField
+    public function setValue($value): HCFormField
     {
-        $this->setFieldType(self::SINGLE_LINE);
+        $this->data['value'] = $value;
 
         return $this;
     }
 
     /**
+     * @param string $url
      * @return HCFormField
      */
-    public function password(): HCFormField
+    public function setSearchUrl(string $url): HCFormField
     {
-        $this->setFieldType(self::PASSWORD);
+        $this->data['searchUrl'] = $url;
 
         return $this;
     }
 
     /**
+     * @param string|null $newUrl
      * @return HCFormField
      */
-    public function textArea(): HCFormField
+    public function setNew(string $newUrl = null): HCFormField
     {
-        $this->setFieldType(self::TEXTAREA);
+        $this->data['new'] = $newUrl;
 
         return $this;
     }
 
     /**
+     * @param string $key
+     * @param mixed $value
      * @return HCFormField
      */
-    public function email(): HCFormField
+    public function addProperty(string $key, $value): HCFormField
     {
-        $this->setFieldType(self::EMAIL);
+        $this->data['properties'][$key] = $value;
 
         return $this;
     }
 
     /**
+     * @param array $properties
      * @return HCFormField
      */
-    public function number(): HCFormField
+    public function setProperties(array $properties): HCFormField
     {
-        $this->setFieldType(self::NUMBER);
+        $this->data['properties'] = $properties;
 
         return $this;
     }
 
     /**
+     * @param int $length
      * @return HCFormField
      */
-    public function checkbox(): HCFormField
+    public function setMinLength(int $length): HCFormField
     {
-        $this->setValue(false);
+        return $this->addProperty('minLength', $length);
+    }
 
-        $this->setFieldType(self::CHECKBOX);
+    /**
+     * @param int $length
+     * @return HCFormField
+     */
+    public function setMaxLength(int $length): HCFormField
+    {
+        return $this->addProperty('maxLength', $length);
+    }
+
+    /**
+     * @param string $id
+     * @param string $label
+     * @return HCFormField
+     */
+    public function addOption(string $id, string $label): HCFormField
+    {
+        if ($this->hasOptions()) {
+            $this->data['options'][] = [
+                'id' => $id,
+                'label' => $label,
+            ];
+        }
 
         return $this;
     }
 
     /**
+     * @param array $options
+     * @param string $idKey
+     * @param string $labelKey
      * @return HCFormField
      */
-    public function checkboxList(): HCFormField
+    public function setOptions(array $options, string $idKey = 'id', string $labelKey = 'label'): HCFormField
     {
-        $this->setFieldType(self::CHECKBOX_LIST);
+        if ($this->hasOptions()) {
+            $this->data['options'] = [];
+
+            foreach ($options as $option) {
+                $this->addOption(Arr::get($option, $idKey), Arr::get($option, $labelKey));
+            }
+        }
 
         return $this;
     }
 
     /**
+     * @param string $fieldId
+     * @param array $value
+     * @param bool $ignore
+     * @param string|null $sendAs
      * @return HCFormField
      */
-    public function dropDownList(): HCFormField
+    public function setDependency(
+        string $fieldId,
+        array $value,
+        bool $ignore = false,
+        string $sendAs = null
+    ): HCFormField
     {
-        $this->setFieldType(self::DROPDOWN_LIST);
+        $this->dependencies[$fieldId] = [
+            'value' => $value,
+            'ignore' => $ignore,
+            'sendAs' => $sendAs,
+        ];
 
         return $this;
     }
@@ -291,11 +321,52 @@ class HCFormField
     }
 
     /**
-     * @param string $type
+     * @param string $label
+     * @return array
      */
-    private function setFieldType(string $type): void
+    protected function getDefaultStructure(string $label = null): array
+    {
+        return [
+            'type' => self::SINGLE_LINE,
+            'label' => $label,
+            'value' => null,
+            'hidden' => false,
+            'readonly' => false,
+            'disabled' => false,
+            'required' => false,
+            'properties' => [],
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getType(): string
+    {
+        return $this->data['type'];
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasOptions(): bool
+    {
+        return ($this->getType() === self::SELECT);
+    }
+
+    /**
+     * @param string $type
+     * @return HCFormField
+     */
+    private function setFieldType(string $type): HCFormField
     {
         $this->data['type'] = $type;
+
+        if ($this->hasOptions()) {
+            $this->data['options'] = [];
+        }
+
+        return $this;
     }
 
     /**

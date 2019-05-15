@@ -55,6 +55,7 @@ abstract class HCForm implements HCFormContract
      * @param string|null $type
      * @return array
      * @throws \ReflectionException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function createForm(string $type = null): array
     {
@@ -95,7 +96,8 @@ abstract class HCForm implements HCFormContract
 
     /**
      * @param string|null $type
-     * @return array
+     * @return  array
+     * @throws \ReflectionException
      */
     public function getButtons(string $type = null): array
     {
@@ -152,6 +154,7 @@ abstract class HCForm implements HCFormContract
 
     /**
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function getContentLanguages(): array
     {
