@@ -183,7 +183,7 @@ class HCFormField
      * @param mixed $value
      * @return HCFormField
      */
-    public function setValue($value): HCFormField
+    public function setValue($value = null): HCFormField
     {
         $this->data['value'] = $value;
 
