@@ -27,6 +27,7 @@
 declare(strict_types=1);
 
 namespace HoneyComb\Starter\Forms;
+
 use Illuminate\Support\Arr;
 
 /**
@@ -130,7 +131,8 @@ class HCFormField
     {
         return $this->setFieldType(self::SELECT)
             ->addProperty('multiple', $multiple)
-            ->addProperty('filterable', $filterable);
+            ->addProperty('filterable', $filterable)
+            ->setValue($multiple ? [] : null);
     }
 
     /**
@@ -189,12 +191,23 @@ class HCFormField
     }
 
     /**
-     * @param string $url
+     * @param string|null $note
      * @return HCFormField
      */
-    public function setSearchUrl(string $url): HCFormField
+    public function setNote(string $note = null): HCFormField
     {
-        $this->data['searchUrl'] = $url;
+        $this->data['note'] = $note;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $placeholder
+     * @return HCFormField
+     */
+    public function setPlaceholder(string $placeholder = null): HCFormField
+    {
+        $this->data['placeholder'] = $placeholder;
 
         return $this;
     }
@@ -211,26 +224,12 @@ class HCFormField
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @param string $url
      * @return HCFormField
      */
-    public function addProperty(string $key, $value): HCFormField
+    public function setSearchUrl(string $url): HCFormField
     {
-        $this->data['properties'][$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param array $properties
-     * @return HCFormField
-     */
-    public function setProperties(array $properties): HCFormField
-    {
-        $this->data['properties'] = $properties;
-
-        return $this;
+        return $this->addProperty('searchUrl', $url);
     }
 
     /**
@@ -252,12 +251,34 @@ class HCFormField
     }
 
     /**
-     * @param string $note
+     * @param array $options
+     * @param string $idKey
+     * @param string $labelKey
      * @return HCFormField
      */
-    public function setNote(string $note): HCFormField
+    public function setOptions(array $options, string $idKey = 'id', string $labelKey = 'label'): HCFormField
     {
-        return $this->addProperty('note', $note);
+        if ($this->hasOptions()) {
+            $this->data['options'] = [];
+
+            foreach ($options as $option) {
+                $this->addOption(Arr::get($option, $idKey), Arr::get($option, $labelKey));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return HCFormField
+     */
+    public function addProperty(string $key, $value): HCFormField
+    {
+        $this->data['properties'][$key] = $value;
+
+        return $this;
     }
 
     /**
@@ -272,25 +293,6 @@ class HCFormField
                 'value' => $id,
                 'label' => $label,
             ];
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param array $options
-     * @param string $idKey
-     * @param string $labelKey
-     * @return HCFormField
-     */
-    public function setOptions(array $options, string $idKey = 'id', string $labelKey = 'label'): HCFormField
-    {
-        if ($this->hasOptions()) {
-            $this->data['options'] = [];
-
-            foreach ($options as $option) {
-                $this->addOption(Arr::get($option, $idKey), Arr::get($option, $labelKey));
-            }
         }
 
         return $this;
@@ -339,12 +341,15 @@ class HCFormField
             'type' => self::SINGLE_LINE,
             'label' => $label,
             'value' => null,
+            'note' => null,
+            'placeholder' => null,
             'hidden' => false,
             'readonly' => false,
             'disabled' => false,
             'required' => false,
             'properties' => [
-                'note' => null
+                'minLength' => null,
+                'maxLength' => null,
             ],
         ];
     }
