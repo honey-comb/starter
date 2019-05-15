@@ -252,6 +252,15 @@ class HCFormField
     }
 
     /**
+     * @param string $note
+     * @return HCFormField
+     */
+    public function setNote(string $note): HCFormField
+    {
+        return $this->addProperty('note', $note);
+    }
+
+    /**
      * @param string $id
      * @param string $label
      * @return HCFormField
@@ -334,7 +343,9 @@ class HCFormField
             'readonly' => false,
             'disabled' => false,
             'required' => false,
-            'properties' => [],
+            'properties' => [
+                'note' => null
+            ],
         ];
     }
 
