@@ -37,6 +37,8 @@ class HCFormButton
     const SUBMIT = 'submit';
     const RESET = 'reset';
     const BUTTON = 'button';
+    const DELETE = 'delete';
+    const CANCEL = 'cancel';
 
     /**
      * @var array
@@ -70,6 +72,26 @@ class HCFormButton
     public function reset(): HCFormButton
     {
         $this->setType(self::RESET);
+
+        return $this;
+    }
+
+    /**
+     * @return HCFormButton
+     */
+    public function delete(): HCFormButton
+    {
+        $this->setType(self::DELETE);
+
+        return $this;
+    }
+
+    /**
+     * @return HCFormButton
+     */
+    public function cancel(): HCFormButton
+    {
+        $this->setType(self::CANCEL);
 
         return $this;
     }
