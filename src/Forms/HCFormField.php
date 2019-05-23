@@ -282,11 +282,11 @@ class HCFormField
     }
 
     /**
-     * @param string $id
-     * @param string $label
+     * @param $id
+     * @param string|null $label
      * @return HCFormField
      */
-    public function addOption(string $id, string $label): HCFormField
+    public function addOption($id, string $label = null): HCFormField
     {
         if ($this->hasOptions()) {
             $this->data['options'][] = [
