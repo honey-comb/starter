@@ -132,7 +132,7 @@ class HCFormField
         return $this->setFieldType(self::SELECT)
             ->addProperty('multiple', $multiple)
             ->addProperty('filterable', $filterable)
-            ->setValue($multiple ? [] : null)
+            ->setValue(null)
             ->setOptionSource()
             ->setOptionDataSource();
     }
