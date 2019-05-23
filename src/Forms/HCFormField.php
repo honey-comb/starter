@@ -24,7 +24,7 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 
@@ -132,7 +132,9 @@ class HCFormField
         return $this->setFieldType(self::SELECT)
             ->addProperty('multiple', $multiple)
             ->addProperty('filterable', $filterable)
-            ->setValue($multiple ? [] : null);
+            ->setValue($multiple ? [] : null)
+            ->setOptionSource()
+            ->setOptionDataSource();
     }
 
     /**
@@ -270,6 +272,41 @@ class HCFormField
     }
 
     /**
+     * @param string|null $source
+     * @return HCFormField
+     */
+    public function setOptionSource(string $source = null): HCFormField
+    {
+        if ($this->hasOptions()) {
+            $this->addProperty('sourceUrl', $source);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $optionSource
+     * @param string $idField
+     * @param string $labelField
+     * @return HCFormField
+     */
+    public function setOptionDataSource(
+        string $optionSource = null,
+        string $idField = 'value',
+        string $labelField = 'label'
+    ): HCFormField {
+        if ($this->hasOptions()) {
+            $this->addProperty('sourcePath', [
+                'optionSource' => $optionSource,
+                'idField' => $idField,
+                'labelField' => $labelField,
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param string $key
      * @param mixed $value
      * @return HCFormField
@@ -310,8 +347,7 @@ class HCFormField
         array $value,
         bool $ignore = false,
         string $sendAs = null
-    ): HCFormField
-    {
+    ): HCFormField {
         $this->dependencies[$fieldId] = [
             'value' => $value,
             'ignore' => $ignore,
