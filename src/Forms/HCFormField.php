@@ -336,6 +336,23 @@ class HCFormField
     }
 
     /**
+     * @param $id
+     * @param string|null $label
+     * @return HCFormField
+     */
+    public function prependOption($id, string $label = null): HCFormField
+    {
+        if ($this->hasOptions()) {
+            array_unshift($this->data['options'], [
+                'value' => $id,
+                'label' => $label,
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param string $fieldId
      * @param array $value
      * @param bool $ignore
