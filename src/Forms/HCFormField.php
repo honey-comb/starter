@@ -44,6 +44,7 @@ class HCFormField
     const CHECKBOX = 'checkBox';
     const SINGLE_LINE = 'singleLine';
     const CHECKBOX_LIST = 'checkBoxList';
+    const RADIO_LIST = 'radioList';
 
     /**
      * @var array
@@ -115,11 +116,23 @@ class HCFormField
     }
 
     /**
+     * @param bool $inRow
      * @return HCFormField
      */
-    public function checkboxList(): HCFormField
+    public function checkboxList(bool $inRow = false): HCFormField
     {
-        return $this->setFieldType(self::CHECKBOX_LIST);
+        return $this->setFieldType(self::CHECKBOX_LIST)
+            ->addProperty('inRow', $inRow);
+    }
+
+    /**
+     * @param bool $inRow
+     * @return HCFormField
+     */
+    public function radioList(bool $inRow = false): HCFormField
+    {
+        return $this->setFieldType(self::RADIO_LIST)
+            ->addProperty('inRow', $inRow);
     }
 
     /**
@@ -179,6 +192,15 @@ class HCFormField
         $this->data['hidden'] = $status;
 
         return $this;
+    }
+
+    /**
+     * @param bool $status
+     * @return HCFormField
+     */
+    public function isFullWidth(bool $status = true): HCFormField
+    {
+        return $this->addProperty('fullWidth', $status);
     }
 
     /**
@@ -401,6 +423,7 @@ class HCFormField
             'disabled' => false,
             'required' => false,
             'properties' => [
+                'fullWidth' => true,
                 'minLength' => null,
                 'maxLength' => null,
             ],
@@ -420,7 +443,7 @@ class HCFormField
      */
     protected function hasOptions(): bool
     {
-        return ($this->getType() === self::SELECT);
+        return in_array($this->getType(), [self::SELECT, self::CHECKBOX_LIST, self::RADIO_LIST]);
     }
 
     /**
