@@ -51,9 +51,7 @@ class HCFormButton
      */
     public function __construct(string $label)
     {
-        $this->data['label'] = $label;
-
-        $this->setType(self::BUTTON);
+        $this->data = $this->getDefaultStructure($label);
     }
 
     /**
@@ -97,11 +95,47 @@ class HCFormButton
     }
 
     /**
+     * @param bool $status
+     * @return HCFormButton
+     */
+    public function isFullWidth(bool $status = true): HCFormButton
+    {
+        return $this->addProperty('fullWidth', $status);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return HCFormButton
+     */
+    public function addProperty(string $key, $value): HCFormButton
+    {
+        $this->data['properties'][$key] = $value;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
         return $this->data;
+    }
+
+    /**
+     * @param string $label
+     * @return array
+     */
+    protected function getDefaultStructure(string $label = null): array
+    {
+        return [
+            'type' => self::BUTTON,
+            'label' => $label,
+            'properties' => [
+                'fullWidth' => false,
+            ],
+        ];
     }
 
     /**
