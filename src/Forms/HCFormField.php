@@ -29,6 +29,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Forms;
 
 use Illuminate\Support\Arr;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Class HCFormField
@@ -335,6 +336,8 @@ class HCFormField
      */
     public function addProperty(string $key, $value): HCFormField
     {
+        $this->setDefaultParam('properties', []);
+
         $this->data['properties'][$key] = $value;
 
         return $this;
@@ -348,6 +351,8 @@ class HCFormField
     public function addOption($id, string $label = null): HCFormField
     {
         if ($this->hasOptions()) {
+            $this->setDefaultParam('options', []);
+
             $this->data['options'][] = [
                 'value' => $id,
                 'label' => $label,
@@ -365,6 +370,8 @@ class HCFormField
     public function prependOption($id, string $label = null): HCFormField
     {
         if ($this->hasOptions()) {
+            $this->setDefaultParam('options', []);
+
             array_unshift($this->data['options'], [
                 'value' => $id,
                 'label' => $label,
@@ -415,18 +422,6 @@ class HCFormField
         return [
             'type' => self::SINGLE_LINE,
             'label' => $label,
-            'value' => null,
-            'note' => null,
-            'placeholder' => null,
-            'hidden' => false,
-            'readonly' => false,
-            'disabled' => false,
-            'required' => false,
-            'properties' => [
-                'fullWidth' => true,
-                'minLength' => null,
-                'maxLength' => null,
-            ],
         ];
     }
 
@@ -468,6 +463,17 @@ class HCFormField
     {
         if (count($this->dependencies) !== 0) {
             $this->data['dependencies'] = $this->dependencies;
+        }
+    }
+
+    /**
+     * @param string $param
+     * @param mixed $value
+     */
+    private function setDefaultParam(string $param, $value = null): void
+    {
+        if (!Arr::has($this->data, $param)) {
+            $this->data[$param] = $value;
         }
     }
 }

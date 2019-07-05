@@ -28,6 +28,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 
+use Illuminate\Support\Arr;
+
 /**
  * Class HCFormButton
  * @package HoneyComb\Starter\Forms
@@ -110,6 +112,8 @@ class HCFormButton
      */
     public function addProperty(string $key, $value): HCFormButton
     {
+        $this->setDefaultParam('properties', []);
+
         $this->data['properties'][$key] = $value;
 
         return $this;
@@ -144,5 +148,16 @@ class HCFormButton
     private function setType(string $type): void
     {
         $this->data['type'] = $type;
+    }
+
+    /**
+     * @param string $param
+     * @param mixed $value
+     */
+    private function setDefaultParam(string $param, $value = null): void
+    {
+        if (!Arr::has($this->data, $param)) {
+            $this->data[$param] = $value;
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace HoneyComb\Starter\Forms;
 use HoneyComb\Starter\Contracts\HCFormContract;
 use HoneyComb\Starter\Enum\HCFormTypeEnum;
 use HoneyComb\Starter\Services\HCLanguageService;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use ReflectionException;
 
 /**
  * Class HCForm
@@ -54,8 +56,8 @@ abstract class HCForm implements HCFormContract
      *
      * @param string|null $type
      * @return array
-     * @throws \ReflectionException
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws ReflectionException
+     * @throws BindingResolutionException
      */
     public function createForm(string $type = null): array
     {
@@ -83,7 +85,7 @@ abstract class HCForm implements HCFormContract
      *
      * @param string|null $type
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getStructure(string $type = null): array
     {
@@ -97,7 +99,7 @@ abstract class HCForm implements HCFormContract
     /**
      * @param string|null $type
      * @return  array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getButtons(string $type = null): array
     {
@@ -154,7 +156,7 @@ abstract class HCForm implements HCFormContract
 
     /**
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     protected function getContentLanguages(): array
     {
