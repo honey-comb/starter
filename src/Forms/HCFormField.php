@@ -238,6 +238,17 @@ class HCFormField
     }
 
     /**
+     * @param string|null $message
+     * @return HCFormField
+     */
+    public function setValidateMessage(string $message = null): HCFormField
+    {
+        $this->data['validateMessage'] = $message;
+
+        return $this;
+    }
+
+    /**
      * @param string|null $newUrl
      * @return HCFormField
      */
