@@ -63,6 +63,7 @@ abstract class HCForm implements HCFormContract
     {
         $data = [
             'storageUrl' => $this->getStorageUrl($type),
+            'storageMethod' => $this->getStorageMethod($type),
             'buttons' => $this->getButtons($type),
             'structure' => $this->getStructure($type),
         ];
@@ -79,6 +80,15 @@ abstract class HCForm implements HCFormContract
      * @return string
      */
     abstract public function getStorageUrl(string $type = null): string;
+
+    /**
+     * @param string|null $type
+     * @return string
+     */
+    public function getStorageMethod(string $type = null): string
+    {
+        return 'POST';
+    }
 
     /**
      * Getting structure
