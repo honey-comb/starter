@@ -64,6 +64,7 @@ class HCResponse
         return response()->json([
             'message' => $message,
             'errors' => $errors,
+            'status' => $status,
         ], $status);
     }
 }
