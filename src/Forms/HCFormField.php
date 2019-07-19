@@ -306,35 +306,13 @@ class HCFormField
     }
 
     /**
-     * @param string|null $source
+     * @param string|null $optionsUrl
      * @return HCFormField
      */
-    public function setOptionSource(string $source = null): HCFormField
+    public function setOptionsUrl(string $optionsUrl = null): HCFormField
     {
         if ($this->hasOptions()) {
-            $this->addProperty('sourceUrl', $source);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string|null $optionSource
-     * @param string $idField
-     * @param string $labelField
-     * @return HCFormField
-     */
-    public function setOptionDataSource(
-        string $optionSource = null,
-        string $idField = 'value',
-        string $labelField = 'label'
-    ): HCFormField {
-        if ($this->hasOptions()) {
-            $this->addProperty('sourcePath', [
-                'optionSource' => $optionSource,
-                'idField' => $idField,
-                'labelField' => $labelField,
-            ]);
+            $this->addProperty('optionsUrl', $optionsUrl);
         }
 
         return $this;
