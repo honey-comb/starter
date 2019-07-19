@@ -377,7 +377,7 @@ class HCFormField
      * @param string|null $sendAs
      * @return HCFormField
      */
-    public function setDependency(
+    public function addDependency(
         string $fieldId,
         array $value,
         bool $ignore = false,
