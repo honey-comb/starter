@@ -29,7 +29,6 @@ declare(strict_types = 1);
 namespace HoneyComb\Starter\Forms;
 
 use Illuminate\Support\Arr;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Class HCFormField
@@ -146,9 +145,7 @@ class HCFormField
         return $this->setFieldType(self::SELECT)
             ->addProperty('multiple', $multiple)
             ->addProperty('filterable', $filterable)
-            ->setValue(null)
-            ->setOptionSource()
-            ->setOptionDataSource();
+            ->setValue(null);
     }
 
     /**
@@ -260,15 +257,6 @@ class HCFormField
     }
 
     /**
-     * @param string $url
-     * @return HCFormField
-     */
-    public function setSearchUrl(string $url): HCFormField
-    {
-        return $this->addProperty('searchUrl', $url);
-    }
-
-    /**
      * @param int $length
      * @return HCFormField
      */
@@ -316,6 +304,17 @@ class HCFormField
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $url
+     * @return HCFormField
+     */
+    public function setSearchUrl(string $url): HCFormField
+    {
+        if ($this->hasOptions()) {
+            return $this->addProperty('searchUrl', $url);
+        }
     }
 
     /**
@@ -371,22 +370,22 @@ class HCFormField
     }
 
     /**
-     * @param string $fieldId
+     * @param string $fieldName
      * @param array $value
-     * @param bool $ignore
+     * @param string $type
      * @param string|null $sendAs
      * @return HCFormField
      */
     public function addDependency(
-        string $fieldId,
-        array $value,
-        bool $ignore = false,
+        string $fieldName,
+        array $value = [],
+        string $type = 'strict',
         string $sendAs = null
     ): HCFormField {
-        $this->dependencies[$fieldId] = [
+        $this->dependencies[$fieldName] = [
             'value' => $value,
-            'ignore' => $ignore,
             'sendAs' => $sendAs,
+            'type' => $type,
         ];
 
         return $this;

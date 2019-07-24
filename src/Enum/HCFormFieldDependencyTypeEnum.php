@@ -21,31 +21,35 @@
  * SOFTWARE.
  *
  * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
+ * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
 
-return [
-    'error' => [
-        'form_not_found' => 'Form not found: :key',
-        'no_method_available' => 'No :method available :className',
-        'not_authorized' => 'Not authorized',
-    ],
+declare(strict_types = 1);
 
-    'enum' => [
-        'boolean_no' => 'No',
-        'boolean_yes' => 'Yes',
+namespace HoneyComb\Starter\Enum;
 
-        'form_type_new' => 'New',
-        'form_type_edit' => 'Edit',
-        'form_type_both' => 'Both',
+/**
+ * Class HCFormFieldDependencyTypeEnum
+ * @package HoneyComb\Starter\Enum
+ */
+class HCFormFieldDependencyTypeEnum extends Enumerable
+{
+    /**
+     * @return HCFormFieldDependencyTypeEnum
+     * @throws \ReflectionException
+     */
+    final public static function any(): HCFormFieldDependencyTypeEnum
+    {
+        return self::make('any', trans('HCStarter::starter.enum.form_field_dependency_type_any'));
+    }
 
-        'form_field_dependency_type_any' => 'Any',
-        'form_field_dependency_type_strict' => 'Strict',
-    ],
-
-    'button' => [
-        'update' => 'Update',
-        'create' => 'Create',
-    ],
-];
+    /**
+     * @return HCFormFieldDependencyTypeEnum
+     * @throws \ReflectionException
+     */
+    final public static function strict(): HCFormFieldDependencyTypeEnum
+    {
+        return self::make('strict', trans('HCStarter::starter.enum.form_field_dependency_type_strict'));
+    }
+}
