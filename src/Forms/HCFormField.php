@@ -379,8 +379,8 @@ class HCFormField
     public function addDependency(
         string $fieldName,
         array $value = [],
-        string $type = 'strict',
-        string $sendAs = null
+        string $sendAs = null,
+        string $type = 'any'
     ): HCFormField {
         $this->dependencies[$fieldName] = [
             'value' => $value,
