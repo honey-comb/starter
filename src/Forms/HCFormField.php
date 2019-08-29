@@ -280,7 +280,7 @@ class HCFormField
      * @param string $labelKey
      * @return HCFormField
      */
-    public function setOptions(array $options, string $idKey = 'id', string $labelKey = 'label'): HCFormField
+    public function setOptions(array $options, string $idKey = 'value', string $labelKey = 'label'): HCFormField
     {
         if ($this->hasOptions()) {
             $this->data['options'] = [];
