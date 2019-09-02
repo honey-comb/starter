@@ -318,6 +318,15 @@ class HCFormField
     }
 
     /**
+     * @param bool $status
+     * @return HCFormField
+     */
+    public function setEmitOnly(bool $status = true): HCFormField
+    {
+        return $this->addProperty('emitOnly', $status);
+    }
+
+    /**
      * @param string $key
      * @param mixed $value
      * @return HCFormField
