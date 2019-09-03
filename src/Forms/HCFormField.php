@@ -327,6 +327,27 @@ class HCFormField
     }
 
     /**
+     * @param float $size
+     * @param callable|null $callable
+     * @return HCFormField
+     */
+    public function setGrid(float $size, callable $callable = null): HCFormField
+    {
+        $grid = new HCGrid();
+
+        $grid->xs($size);
+        if (!is_null($callable)) {
+            $gridInstance = $callable($grid);
+
+            if ($gridInstance instanceof HCGrid) {
+                $grid = $gridInstance;
+            }
+        }
+
+        return $this->addProperty('grid', $grid->toArray());
+    }
+
+    /**
      * @param string $key
      * @param mixed $value
      * @return HCFormField
@@ -390,7 +411,8 @@ class HCFormField
         array $value = [],
         string $sendAs = null,
         string $type = 'any'
-    ): HCFormField {
+    ): HCFormField
+    {
         $this->dependencies[$fieldName] = [
             'value' => $value,
             'sendAs' => $sendAs,
