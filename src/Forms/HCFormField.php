@@ -327,15 +327,13 @@ class HCFormField
     }
 
     /**
-     * @param float $size
      * @param callable|null $callable
      * @return HCFormField
      */
-    public function setGrid(float $size, callable $callable = null): HCFormField
+    public function setGrid(callable $callable = null): HCFormField
     {
         $grid = new HCGrid();
 
-        $grid->xs($size);
         if (!is_null($callable)) {
             $gridInstance = $callable($grid);
 

@@ -24,7 +24,7 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace HoneyComb\Starter\Forms;
 
@@ -34,70 +34,41 @@ namespace HoneyComb\Starter\Forms;
  */
 class HCGrid
 {
-    const XS = 'xs';
-    const SM = 'sm';
-    const MD = 'md';
-    const LG = 'lg';
-    const XL = 'xl';
-    const XXL = 'xxl';
-
     /**
      * @var array
      */
     private $data = [];
 
     /**
-     * @param float $size
+     * @param bool $status
      * @return HCGrid
      */
-    public function xs(float $size): HCGrid
+    public function setFillRow(bool $status = true): HCGrid
     {
-        return $this->add(self::XS, $size);
+        $this->data['fillRow'] = $status;
+
+        return $this;
     }
 
     /**
-     * @param float $size
+     * @param callable|null $callable
      * @return HCGrid
      */
-    public function sm(float $size): HCGrid
+    public function setResponsive(callable $callable = null): HCGrid
     {
-        return $this->add(self::SM, $size);
-    }
+        $responsive = new HCGridResponsive();
 
-    /**
-     * @param float $size
-     * @return HCGrid
-     */
-    public function md(float $size): HCGrid
-    {
-        return $this->add(self::MD, $size);
-    }
+        if (!is_null($callable)) {
+            $responsiveInstance = $callable($responsive);
 
-    /**
-     * @param float $size
-     * @return HCGrid
-     */
-    public function lg(float $size): HCGrid
-    {
-        return $this->add(self::LG, $size);
-    }
+            if ($responsiveInstance instanceof HCGridResponsive) {
+                $responsive = $responsiveInstance;
+            }
+        }
 
-    /**
-     * @param float $size
-     * @return HCGrid
-     */
-    public function xl(float $size): HCGrid
-    {
-        return $this->add(self::XL, $size);
-    }
+        $this->data['responsive'] = $responsive->toArray();
 
-    /**
-     * @param float $size
-     * @return HCGrid
-     */
-    public function xxl(float $size): HCGrid
-    {
-        return $this->add(self::XXL, $size);
+        return $this;
     }
 
     /**
@@ -106,17 +77,5 @@ class HCGrid
     public function toArray(): array
     {
         return $this->data;
-    }
-
-    /**
-     * @param string $type
-     * @param float $size
-     * @return HCGrid
-     */
-    private function add(string $type, float $size = 1): HCGrid
-    {
-        $this->data[$type] = $size;
-
-        return $this;
     }
 }
