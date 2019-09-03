@@ -24,7 +24,7 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace HoneyComb\Starter\Forms;
 
@@ -327,22 +327,24 @@ class HCFormField
     }
 
     /**
-     * @param callable|null $callable
+     * @param bool $status
      * @return HCFormField
      */
-    public function setGrid(callable $callable = null): HCFormField
+    public function setInRow(bool $status = true): HCFormField
     {
-        $grid = new HCGrid();
+        return $this->addProperty('inRow', $status);
+    }
 
-        if (!is_null($callable)) {
-            $gridInstance = $callable($grid);
+    /**
+     * @param callable|null $callable
+     * @param bool $fillRow
+     * @return HCFormField
+     */
+    public function setGrid(callable $callable = null, bool $fillRow = false): HCFormField
+    {
+        $grid = (new HCGrid())->setFillRow($fillRow)->setResponsive($callable)->toArray();
 
-            if ($gridInstance instanceof HCGrid) {
-                $grid = $gridInstance;
-            }
-        }
-
-        return $this->addProperty('grid', $grid->toArray());
+        return $this->addProperty('grid', $grid);
     }
 
     /**
