@@ -31,100 +31,77 @@ namespace HoneyComb\Starter\Forms;
 use Illuminate\Support\Arr;
 
 /**
- * Class HCFormButton
+ * Class HCFormRepeatableFields
  * @package HoneyComb\Starter\Forms
  */
-class HCFormButton
+class HCFormRepeatableField
 {
-    const ADD = 'add';
-    const SUBMIT = 'submit';
-    const RESET = 'reset';
-    const BUTTON = 'button';
-    const DELETE = 'delete';
-    const CANCEL = 'cancel';
-
     /**
      * @var array
      */
     private $data = [];
 
     /**
-     * HCFormField constructor.
+     * @param int $amount
+     * @return HCFormRepeatableField
+     */
+    public function setMaxAmount(int $amount = 5): HCFormRepeatableField
+    {
+        return $this->addProperty('maxAmount', $amount);
+    }
+
+    /**
      * @param string $label
+     * @param callable|null $callable
+     * @return HCFormRepeatableField
      */
-    public function __construct(string $label)
+    public function addButton(string $label, callable $callable = null): HCFormRepeatableField
     {
-        $this->setType(self::BUTTON);
-        $this->setLabel($label);
-    }
+        $this->initProperty('buttons', []);
 
-    /**
-     * @return HCFormButton
-     */
-    public function submit(): HCFormButton
-    {
-        $this->setType(self::SUBMIT);
+        $button = new HCFormButton($label);
+
+        if (!is_null($callable)) {
+            $instance = $callable($button);
+
+            if ($instance instanceof HCFormField) {
+                $button = $instance;
+            }
+        }
+
+        $this->data['buttons'][] = $button->toArray();
 
         return $this;
     }
 
     /**
-     * @return HCFormButton
+     * @return HCFormField
      */
-    public function reset(): HCFormButton
+    public function addField(string $fieldName, string $label = null, callable $callable = null): HCFormRepeatableField
     {
-        $this->setType(self::RESET);
+        $this->initProperty('structure', []);
 
-        return $this;
-    }
+        $field = new HCFormField($label);
 
-    /**
-     * @return HCFormButton
-     */
-    public function delete(): HCFormButton
-    {
-        $this->setType(self::DELETE);
+        if (!is_null($callable)) {
+            $instance = $callable($field);
 
-        return $this;
-    }
+            if ($instance instanceof HCFormField) {
+                $field = $instance;
+            }
+        }
 
-    /**
-     * @return HCFormButton
-     */
-    public function cancel(): HCFormButton
-    {
-        $this->setType(self::CANCEL);
-
-        return $this;
-    }
-
-    /**
-     * @return HCFormButton
-     */
-    public function add(): HCFormButton
-    {
-        $this->setType(self::ADD);
-
-        return $this;
-    }
-
-    /**
-     * @param string|null $label
-     * @return HCFormButton
-     */
-    public function setLabel(string $label = null): HCFormButton
-    {
-        $this->data['label'] = $label;
+        $this->data['structure'][$fieldName] = $field->toArray();
 
         return $this;
     }
 
     /**
      * @param string $key
-     * @param mixed $value
-     * @return HCFormButton
+     * @param $value
+     * @return HCFormRepeatableField
      */
-    public function addProperty(string $key, $value): HCFormButton
+    public function addProperty(string $key, $value): HCFormRepeatableField
     {
         $this->initProperty('properties', []);
 
@@ -134,28 +111,11 @@ class HCFormButton
     }
 
     /**
-     * @param bool $status
-     * @return HCFormButton
-     */
-    public function isFullWidth(bool $status = true): HCFormButton
-    {
-        return $this->addProperty('fullWidth', $status);
-    }
-
-    /**
      * @return array
      */
     public function toArray(): array
     {
         return $this->data;
-    }
-
-    /**
-     * @param string $type
-     */
-    private function setType(string $type): void
-    {
-        $this->data['type'] = $type;
     }
 
     /**

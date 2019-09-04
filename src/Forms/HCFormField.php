@@ -24,7 +24,7 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Forms;
 
@@ -45,6 +45,7 @@ class HCFormField
     const SINGLE_LINE = 'singleLine';
     const CHECKBOX_LIST = 'checkBoxList';
     const RADIO_LIST = 'radioList';
+    const REPEATABLE = 'repeatable';
 
     /**
      * @var array
@@ -122,7 +123,7 @@ class HCFormField
     public function checkboxList(bool $inRow = false): HCFormField
     {
         return $this->setFieldType(self::CHECKBOX_LIST)
-            ->addProperty('inRow', $inRow);
+            ->setInRow($inRow);
     }
 
     /**
@@ -132,7 +133,7 @@ class HCFormField
     public function radioList(bool $inRow = false): HCFormField
     {
         return $this->setFieldType(self::RADIO_LIST)
-            ->addProperty('inRow', $inRow);
+            ->setInRow($inRow);
     }
 
     /**
@@ -146,6 +147,30 @@ class HCFormField
             ->addProperty('multiple', $multiple)
             ->addProperty('filterable', $filterable)
             ->setValue(null);
+    }
+
+    /**
+     * @param bool $multiple
+     * @param bool $filterable
+     * @return HCFormField
+     */
+    public function repeatable(callable $callable): HCFormField
+    {
+        $this->setFieldType(self::REPEATABLE);
+
+        $repeatable = new HCFormRepeatableField();
+
+        if (!is_null($callable)) {
+            $instance = $callable($repeatable);
+
+            if ($instance instanceof HCFormRepeatableField) {
+                $repeatable = $instance;
+            }
+        }
+
+        $this->data['repeatable'] = $repeatable->toArray();
+
+        return $this;
     }
 
     /**
@@ -354,7 +379,7 @@ class HCFormField
      */
     public function addProperty(string $key, $value): HCFormField
     {
-        $this->setDefaultParam('properties', []);
+        $this->initProperty('properties', []);
 
         $this->data['properties'][$key] = $value;
 
@@ -369,7 +394,7 @@ class HCFormField
     public function addOption($id, string $label = null): HCFormField
     {
         if ($this->hasOptions()) {
-            $this->setDefaultParam('options', []);
+            $this->initProperty('options', []);
 
             $this->data['options'][] = [
                 'value' => $id,
@@ -388,7 +413,7 @@ class HCFormField
     public function prependOption($id, string $label = null): HCFormField
     {
         if ($this->hasOptions()) {
-            $this->setDefaultParam('options', []);
+            $this->initProperty('options', []);
 
             array_unshift($this->data['options'], [
                 'value' => $id,
@@ -489,10 +514,12 @@ class HCFormField
      * @param string $param
      * @param mixed $value
      */
-    private function setDefaultParam(string $param, $value = null): void
+    private function initProperty(string $param, $value = null): HCFormField
     {
         if (!Arr::has($this->data, $param)) {
             $this->data[$param] = $value;
         }
+
+        return $this;
     }
 }
