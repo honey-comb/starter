@@ -46,6 +46,9 @@ class HCFormField
     const CHECKBOX_LIST = 'checkBoxList';
     const RADIO_LIST = 'radioList';
     const REPEATABLE = 'repeatable';
+    const TIME = 'time';
+    const DATE = 'date';
+    const DATE_TIME = 'dateTime';
 
     /**
      * @var array
@@ -112,8 +115,7 @@ class HCFormField
      */
     public function checkbox(): HCFormField
     {
-        return $this->setFieldType(self::CHECKBOX)
-            ->setValue(false);
+        return $this->setFieldType(self::CHECKBOX)->setValue(false);
     }
 
     /**
@@ -122,8 +124,7 @@ class HCFormField
      */
     public function checkboxList(bool $inRow = false): HCFormField
     {
-        return $this->setFieldType(self::CHECKBOX_LIST)
-            ->setInRow($inRow);
+        return $this->setFieldType(self::CHECKBOX_LIST)->setInRow($inRow);
     }
 
     /**
@@ -132,8 +133,7 @@ class HCFormField
      */
     public function radioList(bool $inRow = false): HCFormField
     {
-        return $this->setFieldType(self::RADIO_LIST)
-            ->setInRow($inRow);
+        return $this->setFieldType(self::RADIO_LIST)->setInRow($inRow);
     }
 
     /**
@@ -147,6 +147,30 @@ class HCFormField
             ->addProperty('multiple', $multiple)
             ->addProperty('filterable', $filterable)
             ->setValue(null);
+    }
+
+    /**
+     * @return HCFormField
+     */
+    public function time(): HCFormField
+    {
+        return $this->setFieldType(self::TIME);
+    }
+
+    /**
+     * @return HCFormField
+     */
+    public function date(): HCFormField
+    {
+        return $this->setFieldType(self::DATE);
+    }
+
+    /**
+     * @return HCFormField
+     */
+    public function dateTime(): HCFormField
+    {
+        return $this->date()->addProperty('showTime', true);
     }
 
     /**
@@ -224,6 +248,15 @@ class HCFormField
     public function isFullWidth(bool $status = true): HCFormField
     {
         return $this->addProperty('fullWidth', $status);
+    }
+
+    /**
+     * @param mixed $format
+     * @return HCFormField
+     */
+    public function setFormat(string $format): HCFormField
+    {
+        return $this->addProperty('format', $format);
     }
 
     /**
@@ -436,8 +469,7 @@ class HCFormField
         array $value = [],
         string $sendAs = null,
         string $type = 'any'
-    ): HCFormField
-    {
+    ): HCFormField {
         $this->dependencies[$fieldName] = [
             'value' => $value,
             'sendAs' => $sendAs,
