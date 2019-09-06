@@ -64,7 +64,7 @@ class HCFormRepeatableField
         if (!is_null($callable)) {
             $instance = $callable($button);
 
-            if ($instance instanceof HCFormField) {
+            if ($instance instanceof HCFormButton) {
                 $button = $instance;
             }
         }
@@ -75,7 +75,10 @@ class HCFormRepeatableField
     }
 
     /**
-     * @return HCFormField
+     * @param string $fieldName
+     * @param string|null $label
+     * @param callable|null $callable
+     * @return HCFormRepeatableField
      */
     public function addField(string $fieldName, string $label = null, callable $callable = null): HCFormRepeatableField
     {
