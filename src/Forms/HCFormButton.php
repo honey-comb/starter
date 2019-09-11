@@ -143,6 +143,33 @@ class HCFormButton
     }
 
     /**
+     * @param string|null $shape
+     * @return HCFormButton
+     */
+    public function setShape(string $shape = null): HCFormButton
+    {
+        return $this->addProperty('shape', $shape);
+    }
+
+    /**
+     * @param string $size
+     * @return HCFormButton
+     */
+    public function setSize(string $size = 'default'): HCFormButton
+    {
+        return $this->addProperty('size', $size);
+    }
+
+    /**
+     * @param string|null $target
+     * @return HCFormButton
+     */
+    public function setTarget(string $target = null): HCFormButton
+    {
+        return $this->addProperty('target', $target);
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
