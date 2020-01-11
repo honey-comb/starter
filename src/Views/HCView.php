@@ -1,38 +1,11 @@
 <?php
-/**
- * @copyright 2019 innovationbase
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu
- * https://innovationbase.eu
- */
 
 declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Views;
 
 use HoneyComb\Starter\Contracts\HCDataTableContract;
-use HoneyComb\Starter\Contracts\HCFormContract;
 use HoneyComb\Starter\Contracts\HCViewContract;
-use HoneyComb\Starter\Enum\HCFormTypeEnum;
 
 /**
  * Class HCView
@@ -119,47 +92,6 @@ class HCView implements HCViewContract
         return $this;
     }
 
-    /**
-     * @param string $key
-     * @param string $formId
-     * @param string|null $type
-     * @return HCViewContract
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function addFormSource(string $key, string $formId, string $type = null): HCViewContract
-    {
-        $this->data['form_sources'][$key] = route('v1.api.form-manager', ['id' => $formId, 'type' => $type]);
-
-        return $this;
-    }
-
-    /**
-     * @param string $key
-     * @param HCFormContract $form
-     * @param string|null $type
-     * @return HCViewContract
-     * @throws \ReflectionException
-     */
-    public function addForm(string $key, HCFormContract $form, string $type = null): HCViewContract
-    {
-        $formList = [];
-
-        switch ($type) {
-            case HCFormTypeEnum::new()->id():
-                $formList[$type] = $form->getStructure(false);
-                break;
-            case HCFormTypeEnum::edit()->id():
-                $formList[$type] = $form->getStructure(true);
-                break;
-            default:
-                $formList[HCFormTypeEnum::new()->id()] = $form->getStructure(false);
-                $formList[HCFormTypeEnum::edit()->id()] = $form->getStructure(true);
-                break;
-        }
-
-        $this->data['forms'][$key] = $formList;
-    }
-
 
     /**
      * @param string $permission
@@ -194,8 +126,6 @@ class HCView implements HCViewContract
             'key' => $key,
             'label' => $label,
             'views' => [],
-            'forms' => [],
-            'form_sources' => [],
             'data_tables' => [],
             'permissions' => [],
             'config' => [],
