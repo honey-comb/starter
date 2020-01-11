@@ -1,35 +1,13 @@
 <?php
-/**
- * @copyright 2019 innovationbase
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- * Contact InnovationBase:
- * E-mail: hello@innovationbase.eu 
- * https://innovationbase.eu
- */
 
 declare(strict_types = 1);
 
 namespace HoneyComb\Starter\Enum;
 
 use HoneyComb\Starter\Enum\Exceptions\EnumNotFoundException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Class Enumerable
@@ -106,7 +84,7 @@ abstract class Enumerable
      * @param string $id
      * @return Enumerable
      * @throws EnumNotFoundException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function from(string $id): Enumerable
     {
@@ -123,12 +101,12 @@ abstract class Enumerable
 
     /**
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function enum(): array
     {
-        $reflection = new \ReflectionClass(get_called_class());
-        $finalMethods = $reflection->getMethods(\ReflectionMethod::IS_FINAL);
+        $reflection = new ReflectionClass(get_called_class());
+        $finalMethods = $reflection->getMethods(ReflectionMethod::IS_FINAL);
 
         $return = [];
         foreach ($finalMethods as $key => $method) {
@@ -142,7 +120,7 @@ abstract class Enumerable
 
     /**
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function options(): array
     {
@@ -154,7 +132,7 @@ abstract class Enumerable
     /**
      * @param array $keys
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function only(array $keys): array
     {
@@ -166,7 +144,7 @@ abstract class Enumerable
     /**
      * @param array $keys
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function except(array $keys): array
     {
@@ -178,7 +156,7 @@ abstract class Enumerable
 
     /**
      * @return string
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function json(): string
     {
@@ -190,7 +168,7 @@ abstract class Enumerable
     /**
      * @param array $state
      * @return Enumerable
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function __set_state(array $state): self
     {
@@ -202,7 +180,7 @@ abstract class Enumerable
      * @param string $name
      * @param string $description
      * @return Enumerable
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected static function make($id, string $name, string $description = ''): Enumerable
     {
@@ -212,7 +190,7 @@ abstract class Enumerable
             return self::$instances[$class][$id];
         }
 
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         /** @var Enumerable $instance */
         $instance = $reflection->newInstance($id, $name, $description);
