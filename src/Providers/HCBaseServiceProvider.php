@@ -142,10 +142,12 @@ class HCBaseServiceProvider extends ServiceProvider
      */
     private function getRoutes(): array
     {
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(realpath($this->packagePath('Routes'))));
+        /*$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(realpath($this->packagePath('Routes'))));
 
         return array_keys(array_filter(iterator_to_array($iterator), function (SplFileInfo $file) {
             return $file->isFile() && substr($file->getFilename(), 0, strlen('routes.')) === (string)'routes.';
-        }));
+        }));*/
+
+        return [];
     }
 }

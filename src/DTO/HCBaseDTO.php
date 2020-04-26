@@ -33,4 +33,9 @@ abstract class HCBaseDTO implements JsonSerializable, Arrayable
      * @return array
      */
     abstract protected function jsonData(): array;
+
+    /**
+     * @return array
+     */
+    abstract protected function jsonDataList(): array;
 }
